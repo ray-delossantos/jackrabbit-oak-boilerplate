@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Magazine Issues"
+        jcr:description="Browse our collection of VENTURE Magazine issues, packed with adventure stories and inspiration."
+        sling:resourceType="aem-oak/components/page"
+        navTitle="Magazine"/>
+
+    <issue-001
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Winter Adventures"
+            sling:resourceType="aem-oak/components/specialty/magazine-issue"
+            issueNumber="001"
+            publishDate="January 2025"
+            coverImage="/content/dam/venture/magazine/issue-001-cover.jpg"
+            description="Our inaugural issue celebrates the magic of winter adventures. From Arctic expeditions to cozy mountain lodges, discover the best of cold-weather exploration."
+            highlights="Northern Lights Photography Guide,Best Ski Resorts of 2025,Winter Camping Tips,Interview with Ice Climber Alex Honnold"/>
+    </issue-001>
+
+    <issue-002
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Ocean Odyssey"
+            sling:resourceType="aem-oak/components/specialty/magazine-issue"
+            issueNumber="002"
+            publishDate="February 2025"
+            coverImage="/content/dam/venture/magazine/issue-002-cover.jpg"
+            description="Dive into the world's most incredible ocean adventures. From pristine coral reefs to legendary surf breaks, this issue is your guide to aquatic exploration."
+            highlights="Top 10 Dive Destinations,Beginner's Guide to Sailing,Whale Watching Around the World,Sustainable Ocean Travel"/>
+    </issue-002>
+</jcr:root>

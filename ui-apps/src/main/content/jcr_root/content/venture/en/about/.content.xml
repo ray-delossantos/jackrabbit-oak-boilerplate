@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="About VENTURE"
+        jcr:description="Learn about VENTURE Magazine, our mission, and the team behind the stories."
+        sling:resourceType="aem-oak/components/page"
+        navTitle="About"/>
+
+    <contact
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Contact Us"
+            jcr:description="Get in touch with the VENTURE team. We'd love to hear from you."
+            sling:resourceType="aem-oak/components/page"
+            navTitle="Contact"/>
+    </contact>
+
+    <team
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Our Team"
+            jcr:description="Meet the adventurers, writers, and creators who bring VENTURE to life."
+            sling:resourceType="aem-oak/components/page"
+            navTitle="Team"/>
+    </team>
+</jcr:root>

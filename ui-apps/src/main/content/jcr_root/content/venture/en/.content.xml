@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="VENTURE - Adventure & Lifestyle Magazine"
+        jcr:description="Explore the world through adventure sports, travel destinations, gear reviews, and lifestyle inspiration."
+        sling:resourceType="aem-oak/components/page/homepage"
+        cq:template="/conf/venture/templates/homepage"
+        heroImage="/content/dam/venture/hero-adventure.jpg"
+        heroTitle="Discover Your Next Adventure"
+        heroSubtitle="Stories, guides, and inspiration for the modern explorer"
+        navTitle="Home"/>
+</jcr:root>

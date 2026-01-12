@@ -1,0 +1,158 @@
+<!--/*
+    VENTURE Related Articles Component
+    Related content suggestions
+*/-->
+<sly data-sly-use.related="com.aem.oak.models.navigation.RelatedModel"></sly>
+
+<section class="venture-related ${related.layoutClass}" data-sly-test="${related.hasArticles}">
+    <h3 class="venture-related__title" data-sly-test="${related.hasTitle}">${related.title}</h3>
+
+    <div class="venture-related__grid">
+        <sly data-sly-list.article="${related.articles}">
+            <article class="venture-related__item">
+                <a href="${article.link}" class="venture-related__image-link" data-sly-test="${article.hasImage}">
+                    <img src="${article.image}"
+                         alt="${article.title}"
+                         class="venture-related__image"
+                         loading="lazy">
+                </a>
+
+                <div class="venture-related__content">
+                    <span class="venture-related__category"
+                          data-sly-test="${article.hasCategory}">${article.category}</span>
+
+                    <h4 class="venture-related__item-title">
+                        <a href="${article.link}">${article.title}</a>
+                    </h4>
+
+                    <p class="venture-related__excerpt"
+                       data-sly-test="${article.excerpt}">${article.excerpt}</p>
+
+                    <span class="venture-related__date"
+                          data-sly-test="${article.formattedDate}">${article.formattedDate}</span>
+                </div>
+            </article>
+        </sly>
+    </div>
+</section>
+
+<style>
+.venture-related {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.venture-related__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+}
+
+/* Grid Layout */
+.venture-related--grid .venture-related__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.venture-related--grid .venture-related__item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.venture-related--grid .venture-related__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.venture-related--grid .venture-related__image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+}
+
+.venture-related--grid .venture-related__content {
+    padding: 1.25rem;
+}
+
+/* List Layout */
+.venture-related--list .venture-related__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.venture-related--list .venture-related__item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 480px) {
+    .venture-related--list .venture-related__item {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-related--list .venture-related__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Common Styles */
+.venture-related__category {
+    display: inline-block;
+    background: var(--venture-yellow, #FFEA00);
+    color: var(--venture-dark, #202020);
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.venture-related__item-title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-related__item-title a {
+    color: var(--venture-dark, #202020);
+    text-decoration: none;
+}
+
+.venture-related__item-title a:hover {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-related__excerpt {
+    font-size: 0.875rem;
+    color: #6c757d;
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.venture-related__date {
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+</style>

@@ -1,0 +1,110 @@
+<!--/*
+    VENTURE Radio Component
+    Radio button group
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<fieldset class="venture-field venture-field--radio ${properties.required ? 'venture-field--required' : ''}">
+    <legend class="venture-field__legend" data-sly-test="${properties.label}">
+        ${properties.label}
+        <span class="venture-field__required" data-sly-test="${properties.required}">*</span>
+    </legend>
+
+    <div class="venture-radio-group ${properties.inline ? 'venture-radio-group--inline' : ''}">
+        <sly data-sly-list.option="${properties.options}">
+            <label class="venture-radio">
+                <input type="radio"
+                       name="${properties.name}"
+                       class="venture-radio__input"
+                       value="${option.value}"
+                       required="${properties.required && optionList.first ? 'required' : ''}"
+                       checked="${option.checked ? 'checked' : ''}">
+                <span class="venture-radio__mark"></span>
+                <span class="venture-radio__label">${option.label}</span>
+            </label>
+        </sly>
+    </div>
+
+    <span class="venture-field__hint"
+          data-sly-test="${properties.hint}">${properties.hint}</span>
+</fieldset>
+
+<style>
+.venture-field--radio {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.venture-field__legend {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--venture-dark, #202020);
+    margin-bottom: 0.75rem;
+}
+
+.venture-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.venture-radio-group--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.venture-radio {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.venture-radio__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.venture-radio__mark {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.venture-radio__input:focus + .venture-radio__mark {
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-radio__input:checked + .venture-radio__mark {
+    border-color: var(--venture-yellow, #FFEA00);
+}
+
+.venture-radio__input:checked + .venture-radio__mark::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--venture-yellow, #FFEA00);
+    border-radius: 50%;
+}
+
+.venture-radio__label {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.venture-radio:hover .venture-radio__mark {
+    border-color: var(--venture-yellow, #FFEA00);
+}
+</style>

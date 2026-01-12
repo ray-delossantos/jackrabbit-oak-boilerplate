@@ -1,0 +1,90 @@
+<!--/*
+    VENTURE Checkbox Component
+    Checkbox field
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-field venture-field--checkbox ${properties.required ? 'venture-field--required' : ''}">
+    <label class="venture-checkbox">
+        <input type="checkbox"
+               id="${properties.name}"
+               name="${properties.name}"
+               class="venture-checkbox__input"
+               value="${properties.value || 'true'}"
+               required="${properties.required ? 'required' : ''}"
+               checked="${properties.checked ? 'checked' : ''}">
+        <span class="venture-checkbox__mark"></span>
+        <span class="venture-checkbox__label">
+            ${properties.label}
+            <span class="venture-field__required" data-sly-test="${properties.required}">*</span>
+        </span>
+    </label>
+
+    <span class="venture-field__hint"
+          data-sly-test="${properties.hint}">${properties.hint}</span>
+</div>
+
+<style>
+.venture-field--checkbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.venture-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.venture-checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.venture-checkbox__mark {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-top: 2px;
+}
+
+.venture-checkbox__input:focus + .venture-checkbox__mark {
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-checkbox__input:checked + .venture-checkbox__mark {
+    background: var(--venture-yellow, #FFEA00);
+    border-color: var(--venture-yellow, #FFEA00);
+}
+
+.venture-checkbox__input:checked + .venture-checkbox__mark::after {
+    content: "";
+    width: 6px;
+    height: 10px;
+    border: solid var(--venture-dark, #202020);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+.venture-checkbox__label {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #495057;
+}
+
+.venture-checkbox:hover .venture-checkbox__mark {
+    border-color: var(--venture-yellow, #FFEA00);
+}
+</style>

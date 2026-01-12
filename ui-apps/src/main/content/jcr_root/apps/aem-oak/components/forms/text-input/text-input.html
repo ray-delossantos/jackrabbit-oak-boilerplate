@@ -1,0 +1,88 @@
+<!--/*
+    VENTURE Text Input Component
+    Text field with validation
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-field venture-field--text ${properties.required ? 'venture-field--required' : ''}">
+    <label for="${properties.name}"
+           class="venture-field__label"
+           data-sly-test="${properties.label}">${properties.label}
+        <span class="venture-field__required" data-sly-test="${properties.required}">*</span>
+    </label>
+
+    <input type="${properties.type || 'text'}"
+           id="${properties.name}"
+           name="${properties.name}"
+           class="venture-field__input"
+           placeholder="${properties.placeholder}"
+           value="${properties.defaultValue}"
+           required="${properties.required ? 'required' : ''}"
+           pattern="${properties.pattern}"
+           minlength="${properties.minLength}"
+           maxlength="${properties.maxLength}"
+           autocomplete="${properties.autocomplete}">
+
+    <span class="venture-field__hint"
+          data-sly-test="${properties.hint}">${properties.hint}</span>
+    <span class="venture-field__error"
+          data-sly-test="${properties.errorMessage}">${properties.errorMessage}</span>
+</div>
+
+<style>
+.venture-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.venture-field__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--venture-dark, #202020);
+    margin-bottom: 0.5rem;
+}
+
+.venture-field__required {
+    color: var(--venture-coral, #FF6B6B);
+    margin-left: 0.25rem;
+}
+
+.venture-field__input {
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venture-field__input:focus {
+    outline: none;
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-field__input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-field__input::placeholder {
+    color: #adb5bd;
+}
+
+.venture-field__hint {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.375rem;
+}
+
+.venture-field__error {
+    font-size: 0.8rem;
+    color: var(--venture-coral, #FF6B6B);
+    margin-top: 0.375rem;
+    display: none;
+}
+
+.venture-field__input:invalid:not(:focus):not(:placeholder-shown) ~ .venture-field__error {
+    display: block;
+}
+</style>

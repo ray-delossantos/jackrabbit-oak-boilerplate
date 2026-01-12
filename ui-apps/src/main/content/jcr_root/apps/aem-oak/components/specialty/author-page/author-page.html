@@ -1,0 +1,167 @@
+<!--/*
+    VENTURE Author Page Component
+    Author profile page template
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-author-page">
+    <!-- Author Header -->
+    <header class="venture-author-page__header">
+        <div class="venture-author-page__profile">
+            <img src="${properties.authorImage}"
+                 alt="${properties.authorName}"
+                 class="venture-author-page__image"
+                 data-sly-test="${properties.authorImage}">
+
+            <div class="venture-author-page__info">
+                <h1 class="venture-author-page__name">${properties.authorName || 'Author'}</h1>
+                <p class="venture-author-page__title"
+                   data-sly-test="${properties.authorTitle}">${properties.authorTitle}</p>
+
+                <!-- Social Links -->
+                <div class="venture-author-page__social">
+                    <a href="https://twitter.com/${properties.twitter}"
+                       class="venture-author-page__social-link"
+                       data-sly-test="${properties.twitter}"
+                       target="_blank"
+                       rel="noopener">Twitter</a>
+                    <a href="${properties.linkedin}"
+                       class="venture-author-page__social-link"
+                       data-sly-test="${properties.linkedin}"
+                       target="_blank"
+                       rel="noopener">LinkedIn</a>
+                    <a href="https://instagram.com/${properties.instagram}"
+                       class="venture-author-page__social-link"
+                       data-sly-test="${properties.instagram}"
+                       target="_blank"
+                       rel="noopener">Instagram</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="venture-author-page__bio"
+             data-sly-test="${properties.bio}">
+            ${properties.bio @ context='html'}
+        </div>
+
+        <!-- Stats -->
+        <div class="venture-author-page__stats">
+            <div class="venture-author-page__stat">
+                <span class="venture-author-page__stat-number">${properties.articleCount || '0'}</span>
+                <span class="venture-author-page__stat-label">Articles</span>
+            </div>
+            <div class="venture-author-page__stat" data-sly-test="${properties.memberSince}">
+                <span class="venture-author-page__stat-number">${properties.memberSince}</span>
+                <span class="venture-author-page__stat-label">Member Since</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Author's Articles -->
+    <section class="venture-author-page__articles">
+        <h2 class="venture-author-page__section-title">Articles by ${properties.authorName}</h2>
+        <sly data-sly-resource="${'articles' @ resourceType='aem-oak/components/article/article-list'}"></sly>
+    </section>
+</div>
+
+<style>
+.venture-author-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+}
+
+.venture-author-page__header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.venture-author-page__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.venture-author-page__image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.venture-author-page__name {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-author-page__title {
+    font-size: 1.125rem;
+    color: #6c757d;
+    margin: 0 0 1rem 0;
+}
+
+.venture-author-page__social {
+    display: flex;
+    gap: 1rem;
+}
+
+.venture-author-page__social-link {
+    color: var(--venture-coral, #FF6B6B);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.venture-author-page__social-link:hover {
+    text-decoration: underline;
+}
+
+.venture-author-page__bio {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #495057;
+}
+
+.venture-author-page__stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.venture-author-page__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.venture-author-page__stat-number {
+    font-family: var(--venture-font-accent, 'Bebas Neue', sans-serif);
+    font-size: 2.5rem;
+    color: var(--venture-dark, #202020);
+    line-height: 1;
+}
+
+.venture-author-page__stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.venture-author-page__section-title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin: 0 0 2rem 0;
+    text-align: center;
+}
+</style>

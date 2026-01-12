@@ -1,0 +1,123 @@
+<!--/*
+    VENTURE Category Page Component
+    Category landing page template
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-category-page">
+    <!-- Category Header -->
+    <header class="venture-category-page__header"
+            style="background-image: url('${properties.heroImage}');">
+        <div class="venture-category-page__overlay">
+            <h1 class="venture-category-page__title">${properties.title || 'Category'}</h1>
+            <p class="venture-category-page__description"
+               data-sly-test="${properties.description}">${properties.description}</p>
+        </div>
+    </header>
+
+    <!-- Category Content -->
+    <div class="venture-category-page__content">
+        <!-- Featured Article -->
+        <section class="venture-category-page__featured" data-sly-test="${properties.featuredArticle}">
+            <sly data-sly-resource="${'featured' @ resourceType='aem-oak/components/specialty/featured-article'}"></sly>
+        </section>
+
+        <!-- Article Grid -->
+        <section class="venture-category-page__articles">
+            <sly data-sly-resource="${'articles' @ resourceType='aem-oak/components/article/article-list'}"></sly>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="venture-category-page__sidebar">
+            <sly data-sly-resource="${'sidebar' @ resourceType='aem-oak/components/navigation/sidebar'}"></sly>
+        </aside>
+    </div>
+</div>
+
+<style>
+.venture-category-page {
+    min-height: 100vh;
+}
+
+.venture-category-page__header {
+    position: relative;
+    min-height: 300px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 -1rem;
+}
+
+@media (min-width: 900px) {
+    .venture-category-page__header {
+        min-height: 400px;
+        margin: 0 calc(-50vw + 50%);
+    }
+}
+
+.venture-category-page__overlay {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem;
+    color: #fff;
+}
+
+.venture-category-page__header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.venture-category-page__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    margin: 0 0 1rem 0;
+    text-transform: capitalize;
+}
+
+.venture-category-page__description {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+.venture-category-page__content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+}
+
+@media (max-width: 992px) {
+    .venture-category-page__content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-category-page__featured {
+    grid-column: 1 / -1;
+    margin-bottom: 2rem;
+}
+
+.venture-category-page__articles {
+    min-width: 0;
+}
+
+.venture-category-page__sidebar {
+    order: 2;
+}
+
+@media (max-width: 992px) {
+    .venture-category-page__sidebar {
+        order: 3;
+    }
+}
+</style>

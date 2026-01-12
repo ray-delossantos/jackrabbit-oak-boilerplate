@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Our Writers"
+        jcr:description="Meet the passionate adventurers and storytellers behind VENTURE Magazine."
+        sling:resourceType="aem-oak/components/page"
+        hideInNav="true"/>
+
+    <sarah-chen
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Sarah Chen"
+            sling:resourceType="aem-oak/components/specialty/author-page"
+            authorName="Sarah Chen"
+            authorTitle="Senior Travel Writer"
+            authorImage="/content/dam/venture/authors/sarah-chen.jpg"
+            bio="Sarah has been exploring the world for over 15 years, specializing in Arctic adventures and aurora photography. When she's not chasing northern lights, you'll find her planning her next expedition to remote corners of the globe."
+            twitter="sarahchentravel"
+            instagram="sarahchenphoto"
+            articleCount="47"
+            memberSince="2019"/>
+    </sarah-chen>
+
+    <marcus-rodriguez
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Marcus Rodriguez"
+            sling:resourceType="aem-oak/components/specialty/author-page"
+            authorName="Marcus Rodriguez"
+            authorTitle="Surf & Ocean Editor"
+            authorImage="/content/dam/venture/authors/marcus-rodriguez.jpg"
+            bio="A lifelong surfer and ocean conservationist, Marcus has ridden waves across five continents. He brings his deep knowledge of surf culture and marine environments to every story he writes."
+            twitter="marcussurfing"
+            instagram="marcus_ocean"
+            articleCount="62"
+            memberSince="2018"/>
+    </marcus-rodriguez>
+
+    <emma-wilson
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Emma Wilson"
+            sling:resourceType="aem-oak/components/specialty/author-page"
+            authorName="Emma Wilson"
+            authorTitle="Mountain Sports Correspondent"
+            authorImage="/content/dam/venture/authors/emma-wilson.jpg"
+            bio="Emma is a certified mountain guide and ski instructor who has summited peaks across the Alps, Rockies, and Himalayas. She writes about hiking, climbing, and winter sports with firsthand expertise."
+            twitter="emmamountains"
+            linkedin="https://linkedin.com/in/emmawilson"
+            articleCount="38"
+            memberSince="2020"/>
+    </emma-wilson>
+</jcr:root>

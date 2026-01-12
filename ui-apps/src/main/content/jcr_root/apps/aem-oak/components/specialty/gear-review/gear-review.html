@@ -1,0 +1,295 @@
+<!--/*
+    VENTURE Gear Review Component
+    Product review card with rating
+*/-->
+<sly data-sly-use.gear="com.aem.oak.models.specialty.GearModel"></sly>
+
+<article class="venture-gear ${gear.layoutClass}" data-sly-test="${gear.hasContent}">
+    <!-- Editor's Choice Badge -->
+    <div class="venture-gear__badge" data-sly-test="${gear.editorsChoice}">
+        Editor's Choice
+    </div>
+
+    <!-- Product Image -->
+    <div class="venture-gear__image-wrapper">
+        <img src="${gear.image}"
+             alt="${gear.name}"
+             class="venture-gear__image"
+             data-sly-test="${gear.image}">
+    </div>
+
+    <!-- Product Info -->
+    <div class="venture-gear__content">
+        <div class="venture-gear__header">
+            <span class="venture-gear__brand" data-sly-test="${gear.brand}">${gear.brand}</span>
+            <h3 class="venture-gear__name">${gear.name}</h3>
+
+            <!-- Rating -->
+            <div class="venture-gear__rating">
+                <div class="venture-gear__stars">
+                    <sly data-sly-repeat="${[1,2,3,4,5]}">
+                        <svg class="venture-gear__star ${item <= gear.ratingStars ? 'filled' : ''}"
+                             viewBox="0 0 24 24"
+                             width="20"
+                             height="20">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                    </sly>
+                </div>
+                <span class="venture-gear__rating-number">${gear.ratingDisplay}</span>
+            </div>
+
+            <!-- Price -->
+            <div class="venture-gear__price" data-sly-test="${gear.price}">${gear.price}</div>
+        </div>
+
+        <!-- Description -->
+        <p class="venture-gear__description" data-sly-test="${gear.description}">${gear.description}</p>
+
+        <!-- Pros/Cons (Full layout) -->
+        <div class="venture-gear__pros-cons" data-sly-test="${gear.layout == 'full'}">
+            <div class="venture-gear__pros" data-sly-test="${gear.hasPros}">
+                <h4 class="venture-gear__pros-title">Pros</h4>
+                <ul class="venture-gear__pros-list">
+                    <sly data-sly-list.pro="${gear.prosList}">
+                        <li>${pro}</li>
+                    </sly>
+                </ul>
+            </div>
+
+            <div class="venture-gear__cons" data-sly-test="${gear.hasCons}">
+                <h4 class="venture-gear__cons-title">Cons</h4>
+                <ul class="venture-gear__cons-list">
+                    <sly data-sly-list.con="${gear.consList}">
+                        <li>${con}</li>
+                    </sly>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Verdict -->
+        <div class="venture-gear__verdict" data-sly-test="${gear.hasVerdict}">
+            <h4 class="venture-gear__verdict-title">Our Verdict</h4>
+            <p>${gear.verdict}</p>
+        </div>
+
+        <!-- Buy Button -->
+        <a href="${gear.buyLink}"
+           class="venture-gear__buy venture-btn venture-btn--primary"
+           target="_blank"
+           rel="noopener sponsored"
+           data-sly-test="${gear.hasBuyLink}">
+            Buy Now
+        </a>
+    </div>
+</article>
+
+<style>
+.venture-gear {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Card Layout */
+.venture-gear--card {
+    max-width: 350px;
+}
+
+.venture-gear--card .venture-gear__image-wrapper {
+    aspect-ratio: 1;
+    background: #f8f9fa;
+}
+
+.venture-gear--card .venture-gear__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+}
+
+.venture-gear--card .venture-gear__content {
+    padding: 1.5rem;
+}
+
+/* Full Layout */
+.venture-gear--full {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    max-width: 900px;
+}
+
+@media (max-width: 768px) {
+    .venture-gear--full {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-gear--full .venture-gear__image-wrapper {
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.venture-gear--full .venture-gear__image {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.venture-gear--full .venture-gear__content {
+    padding: 2rem;
+}
+
+/* Badge */
+.venture-gear__badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--venture-coral, #FF6B6B);
+    color: #fff;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+/* Header */
+.venture-gear__brand {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.venture-gear__name {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0.25rem 0 0.75rem 0;
+}
+
+/* Rating */
+.venture-gear__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.venture-gear__stars {
+    display: flex;
+    gap: 0.125rem;
+}
+
+.venture-gear__star {
+    fill: #dee2e6;
+    stroke: none;
+}
+
+.venture-gear__star.filled {
+    fill: var(--venture-yellow, #FFEA00);
+}
+
+.venture-gear__rating-number {
+    font-weight: 700;
+    color: var(--venture-dark, #202020);
+}
+
+/* Price */
+.venture-gear__price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--venture-dark, #202020);
+    margin-bottom: 1rem;
+}
+
+/* Description */
+.venture-gear__description {
+    color: #495057;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Pros/Cons */
+.venture-gear__pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+@media (max-width: 480px) {
+    .venture-gear__pros-cons {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-gear__pros-title,
+.venture-gear__cons-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-gear__pros-title {
+    color: #28a745;
+}
+
+.venture-gear__cons-title {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-gear__pros-list,
+.venture-gear__cons-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.venture-gear__pros-list li,
+.venture-gear__cons-list li {
+    margin-bottom: 0.25rem;
+}
+
+/* Verdict */
+.venture-gear__verdict {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-left: 4px solid var(--venture-yellow, #FFEA00);
+    border-radius: 0 8px 8px 0;
+}
+
+.venture-gear__verdict-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-gear__verdict p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #495057;
+    line-height: 1.6;
+}
+
+/* Buy Button */
+.venture-gear__buy {
+    display: inline-block;
+}
+</style>

@@ -1,0 +1,229 @@
+<!--/*
+    VENTURE Table of Contents Component
+    Auto-generated navigation from page headings
+*/-->
+<sly data-sly-use.toc="com.aem.oak.models.navigation.TocModel"></sly>
+
+<nav class="venture-toc ${toc.numbered ? 'venture-toc--numbered' : ''} ${toc.collapsible ? 'venture-toc--collapsible' : ''}"
+     aria-label="Table of Contents"
+     data-selector="${toc.headingSelector}"
+     data-smooth="${toc.smooth}"
+     data-offset="${toc.scrollOffset}">
+
+    <div class="venture-toc__header">
+        <h4 class="venture-toc__title" data-sly-test="${toc.hasTitle}">${toc.title}</h4>
+        <button class="venture-toc__toggle"
+                aria-label="Toggle table of contents"
+                aria-expanded="${toc.startCollapsed ? 'false' : 'true'}"
+                data-sly-test="${toc.collapsible}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="venture-toc__content ${toc.startCollapsed ? 'collapsed' : ''}">
+        <ol class="venture-toc__list">
+            <!-- Populated by JavaScript -->
+        </ol>
+    </div>
+</nav>
+
+<style>
+.venture-toc {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.venture-toc__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.venture-toc__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin: 0;
+    color: var(--venture-dark, #202020);
+}
+
+.venture-toc__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.venture-toc__toggle:hover {
+    background: var(--venture-yellow, #FFEA00);
+    border-color: var(--venture-yellow, #FFEA00);
+}
+
+.venture-toc__toggle[aria-expanded="false"] svg {
+    transform: rotate(-90deg);
+}
+
+.venture-toc__content {
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.venture-toc__content.collapsed {
+    display: none;
+}
+
+.venture-toc__list {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.venture-toc:not(.venture-toc--numbered) .venture-toc__list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.venture-toc__item {
+    margin: 0.5rem 0;
+}
+
+.venture-toc__link {
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: block;
+    padding: 0.25rem 0;
+    transition: color 0.2s ease;
+}
+
+.venture-toc__link:hover {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-toc__link.active {
+    color: var(--venture-coral, #FF6B6B);
+    font-weight: 600;
+}
+
+/* Nested levels */
+.venture-toc__list .venture-toc__list {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+}
+
+.venture-toc__list .venture-toc__list .venture-toc__link {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Numbered variant */
+.venture-toc--numbered .venture-toc__list {
+    counter-reset: toc;
+}
+
+.venture-toc--numbered .venture-toc__item {
+    counter-increment: toc;
+}
+
+.venture-toc--numbered .venture-toc__item > .venture-toc__link::before {
+    content: counters(toc, ".") ". ";
+    color: var(--venture-coral, #FF6B6B);
+    font-weight: 600;
+}
+</style>
+
+<script>
+(function() {
+    const tocContainers = document.querySelectorAll('.venture-toc');
+
+    tocContainers.forEach(function(toc) {
+        const selector = toc.dataset.selector || 'h2, h3';
+        const smooth = toc.dataset.smooth !== 'false';
+        const offset = parseInt(toc.dataset.offset) || 80;
+        const list = toc.querySelector('.venture-toc__list');
+        const toggle = toc.querySelector('.venture-toc__toggle');
+        const content = toc.querySelector('.venture-toc__content');
+
+        // Find headings in the article content
+        const article = document.querySelector('.venture-article__content, article, main');
+        if (!article || !list) return;
+
+        const headings = article.querySelectorAll(selector);
+        if (headings.length === 0) {
+            toc.style.display = 'none';
+            return;
+        }
+
+        // Build TOC
+        let currentList = list;
+        let currentLevel = 0;
+
+        headings.forEach(function(heading, index) {
+            // Add ID to heading if not present
+            if (!heading.id) {
+                heading.id = 'heading-' + index;
+            }
+
+            const level = parseInt(heading.tagName.charAt(1));
+            const item = document.createElement('li');
+            item.className = 'venture-toc__item';
+
+            const link = document.createElement('a');
+            link.className = 'venture-toc__link';
+            link.href = '#' + heading.id;
+            link.textContent = heading.textContent;
+
+            item.appendChild(link);
+            list.appendChild(item);
+
+            // Smooth scroll
+            if (smooth) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.getElementById(heading.id);
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                    history.pushState(null, '', '#' + heading.id);
+                });
+            }
+        });
+
+        // Toggle functionality
+        if (toggle) {
+            toggle.addEventListener('click', function() {
+                const expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                content.classList.toggle('collapsed');
+            });
+        }
+
+        // Active state on scroll
+        if (headings.length > 0) {
+            const links = list.querySelectorAll('.venture-toc__link');
+
+            window.addEventListener('scroll', function() {
+                let activeIndex = 0;
+                headings.forEach(function(heading, index) {
+                    if (heading.getBoundingClientRect().top < offset + 50) {
+                        activeIndex = index;
+                    }
+                });
+
+                links.forEach(function(link, index) {
+                    link.classList.toggle('active', index === activeIndex);
+                });
+            });
+        }
+    });
+})();
+</script>

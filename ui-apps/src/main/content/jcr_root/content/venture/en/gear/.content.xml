@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Gear Reviews"
+        jcr:description="In-depth reviews of the best outdoor and adventure gear. Tested by experts, trusted by adventurers."
+        sling:resourceType="aem-oak/components/specialty/category-page"
+        cq:template="/conf/venture/templates/category"
+        heroImage="/content/dam/venture/gear/category-hero.jpg"
+        navTitle="Gear"/>
+
+    <best-hiking-boots-2025
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Best Hiking Boots of 2025"
+            jcr:description="We tested 20 hiking boots to find the best options for every type of hiker."
+            sling:resourceType="aem-oak/components/article/article"
+            heroImage="/content/dam/venture/gear/hiking-boots-hero.jpg"
+            category="Gear Reviews"
+            categoryLink="/content/venture/en/gear"
+            authorName="Jake Thompson"
+            authorImage="/content/dam/venture/authors/jake-thompson.jpg"
+            authorLink="/content/venture/en/authors/jake-thompson"
+            publishDate="2025-01-08T07:00:00.000Z"
+            readingTime="20"/>
+    </best-hiking-boots-2025>
+
+    <camping-essentials
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Essential Camping Gear for Beginners"
+            jcr:description="Starting your camping journey? Here's everything you need to know about essential gear."
+            sling:resourceType="aem-oak/components/article/article"
+            heroImage="/content/dam/venture/gear/camping-essentials.jpg"
+            category="Gear Reviews"
+            categoryLink="/content/venture/en/gear"
+            authorName="Lisa Park"
+            authorImage="/content/dam/venture/authors/lisa-park.jpg"
+            authorLink="/content/venture/en/authors/lisa-park"
+            publishDate="2025-01-06T11:00:00.000Z"
+            readingTime="10"/>
+    </camping-essentials>
+</jcr:root>

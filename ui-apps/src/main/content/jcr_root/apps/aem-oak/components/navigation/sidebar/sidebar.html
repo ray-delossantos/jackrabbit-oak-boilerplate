@@ -1,0 +1,80 @@
+<!--/*
+    VENTURE Sidebar Component
+    Sidebar widget container
+*/-->
+<sly data-sly-use.sidebar="com.aem.oak.models.navigation.SidebarModel"></sly>
+
+<aside class="venture-sidebar ${sidebar.positionClass} ${sidebar.styleClass}"
+       style="${sidebar.stickyStyle}">
+
+    <h3 class="venture-sidebar__title" data-sly-test="${sidebar.hasTitle}">${sidebar.title}</h3>
+
+    <div class="venture-sidebar__widgets">
+        <sly data-sly-resource="${'widgets' @ resourceType='wcm/foundation/components/parsys'}"></sly>
+    </div>
+</aside>
+
+<style>
+.venture-sidebar {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .venture-sidebar {
+        max-width: 300px;
+    }
+}
+
+.venture-sidebar__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--venture-yellow, #FFEA00);
+}
+
+.venture-sidebar__widgets > * {
+    margin-bottom: 2rem;
+}
+
+/* Style Variants */
+.venture-sidebar--default {
+    padding: 0;
+}
+
+.venture-sidebar--bordered {
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.venture-sidebar--shadowed {
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
+.venture-sidebar--minimal .venture-sidebar__title {
+    border-bottom: none;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6c757d;
+}
+
+/* Widget styles within sidebar */
+.venture-sidebar .venture-card {
+    box-shadow: none;
+    border: 1px solid #eee;
+}
+
+.venture-sidebar .venture-teaser {
+    box-shadow: none;
+}
+
+.venture-sidebar .venture-teaser__title {
+    font-size: 1rem;
+}
+</style>

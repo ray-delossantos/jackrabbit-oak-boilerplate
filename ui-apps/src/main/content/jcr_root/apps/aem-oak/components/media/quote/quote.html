@@ -1,0 +1,206 @@
+<!--/*
+    VENTURE Quote Component
+    Blockquote with attribution and styling options
+*/-->
+<sly data-sly-use.quote="com.aem.oak.models.media.QuoteModel"></sly>
+
+<blockquote class="venture-quote ${quote.styleClass} ${quote.alignmentClass}"
+            data-sly-test="${quote.hasContent}">
+    <div class="venture-quote__content">
+        <p class="venture-quote__text">${quote.quote}</p>
+    </div>
+
+    <footer class="venture-quote__footer" data-sly-test="${quote.hasAttribution || quote.hasSource}">
+        <!-- Attribution with Image -->
+        <div class="venture-quote__attribution">
+            <img src="${quote.attributionImage}"
+                 alt="${quote.attribution}"
+                 class="venture-quote__image"
+                 data-sly-test="${quote.hasAttributionImage}">
+            <div class="venture-quote__cite">
+                <cite class="venture-quote__author" data-sly-test="${quote.hasAttribution}">
+                    ${quote.attribution}
+                </cite>
+                <span class="venture-quote__title" data-sly-test="${quote.attributionTitle}">
+                    ${quote.attributionTitle}
+                </span>
+                <a href="${quote.sourceUrl}"
+                   class="venture-quote__source"
+                   data-sly-test="${quote.hasSource && quote.hasSourceUrl}"
+                   target="_blank"
+                   rel="noopener">${quote.source}</a>
+                <span class="venture-quote__source"
+                      data-sly-test="${quote.hasSource && !quote.hasSourceUrl}">${quote.source}</span>
+            </div>
+        </div>
+    </footer>
+</blockquote>
+
+<style>
+.venture-quote {
+    margin: 2rem 0;
+    padding: 0;
+    border: none;
+}
+
+/* Alignment */
+.venture-quote--left { text-align: left; }
+.venture-quote--center { text-align: center; }
+.venture-quote--right { text-align: right; }
+
+/* Default Style */
+.venture-quote--default {
+    border-left: 4px solid var(--venture-yellow, #FFEA00);
+    padding-left: 1.5rem;
+}
+
+.venture-quote--default .venture-quote__text {
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #495057;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Large Style */
+.venture-quote--large {
+    padding: 2rem 0;
+}
+
+.venture-quote--large .venture-quote__text {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--venture-dark, #202020);
+    margin: 0;
+}
+
+.venture-quote--large .venture-quote__text::before {
+    content: """;
+    font-size: 4rem;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: var(--venture-yellow, #FFEA00);
+    margin-right: 0.1em;
+}
+
+/* Pullquote Style */
+.venture-quote--pullquote {
+    position: relative;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.venture-quote--pullquote::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--venture-coral, #FF6B6B);
+    border-radius: 4px 0 0 4px;
+}
+
+.venture-quote--pullquote .venture-quote__text {
+    font-size: 1.375rem;
+    font-weight: 500;
+    color: var(--venture-dark, #202020);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Testimonial Style */
+.venture-quote--testimonial {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.venture-quote--testimonial .venture-quote__text {
+    font-size: 1.125rem;
+    color: #495057;
+    line-height: 1.7;
+    margin: 0 0 1.5rem 0;
+}
+
+.venture-quote--testimonial .venture-quote__image {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 0.75rem;
+}
+
+/* Minimal Style */
+.venture-quote--minimal .venture-quote__text {
+    font-size: 1.125rem;
+    color: #6c757d;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Footer & Attribution */
+.venture-quote__footer {
+    margin-top: 1rem;
+}
+
+.venture-quote__attribution {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.venture-quote--center .venture-quote__attribution {
+    justify-content: center;
+}
+
+.venture-quote--right .venture-quote__attribution {
+    justify-content: flex-end;
+}
+
+.venture-quote--testimonial .venture-quote__attribution {
+    flex-direction: column;
+    gap: 0;
+}
+
+.venture-quote__image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.venture-quote__cite {
+    display: flex;
+    flex-direction: column;
+}
+
+.venture-quote--testimonial .venture-quote__cite {
+    align-items: center;
+}
+
+.venture-quote__author {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--venture-dark, #202020);
+}
+
+.venture-quote__title {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.venture-quote__source {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-decoration: none;
+}
+
+.venture-quote__source:hover {
+    color: var(--venture-coral, #FF6B6B);
+}
+</style>

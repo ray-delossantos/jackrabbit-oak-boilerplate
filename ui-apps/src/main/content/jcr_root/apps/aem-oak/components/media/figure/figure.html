@@ -1,0 +1,166 @@
+<!--/*
+    VENTURE Figure Component
+    Image with caption and credit
+*/-->
+<sly data-sly-use.figure="com.aem.oak.models.media.FigureModel"></sly>
+
+<figure class="venture-figure ${figure.sizeClass} ${figure.alignmentClass} ${figure.modifierClasses}"
+        data-sly-test="${figure.hasContent}">
+
+    <!-- Image with optional link -->
+    <a href="${figure.link}"
+       class="venture-figure__link"
+       target="${figure.linkTarget}"
+       data-sly-test="${figure.hasLink}">
+        <img src="${figure.image}"
+             alt="${figure.alt}"
+             class="venture-figure__image"
+             loading="lazy">
+    </a>
+
+    <img src="${figure.image}"
+         alt="${figure.alt}"
+         class="venture-figure__image"
+         loading="lazy"
+         data-sly-test="${!figure.hasLink}">
+
+    <!-- Caption and Credit -->
+    <figcaption class="venture-figure__caption" data-sly-test="${figure.hasCaption || figure.hasCredit}">
+        <span class="venture-figure__text" data-sly-test="${figure.hasCaption}">${figure.caption}</span>
+        <a href="${figure.creditUrl}"
+           class="venture-figure__credit"
+           target="_blank"
+           rel="noopener"
+           data-sly-test="${figure.hasCredit && figure.hasCreditUrl}">Photo: ${figure.credit}</a>
+        <span class="venture-figure__credit"
+              data-sly-test="${figure.hasCredit && !figure.hasCreditUrl}">Photo: ${figure.credit}</span>
+    </figcaption>
+</figure>
+
+<style>
+.venture-figure {
+    margin: 2rem 0;
+}
+
+/* Alignment */
+.venture-figure--center {
+    text-align: center;
+}
+
+.venture-figure--center .venture-figure__image {
+    margin: 0 auto;
+}
+
+.venture-figure--left {
+    float: left;
+    margin: 0.5rem 2rem 1rem 0;
+}
+
+.venture-figure--right {
+    float: right;
+    margin: 0.5rem 0 1rem 2rem;
+}
+
+/* Size variants */
+.venture-figure--small .venture-figure__image {
+    max-width: 300px;
+}
+
+.venture-figure--default .venture-figure__image {
+    max-width: 100%;
+}
+
+.venture-figure--large .venture-figure__image {
+    max-width: 100%;
+    width: 100%;
+}
+
+.venture-figure--full {
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+
+@media (min-width: 900px) {
+    .venture-figure--full {
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+    }
+}
+
+.venture-figure--full .venture-figure__image {
+    width: 100%;
+}
+
+/* Image styling */
+.venture-figure__link {
+    display: block;
+}
+
+.venture-figure__image {
+    display: block;
+    height: auto;
+}
+
+/* Modifiers */
+.venture-figure--rounded .venture-figure__image {
+    border-radius: 8px;
+}
+
+.venture-figure--shadow .venture-figure__image {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.venture-figure--border .venture-figure__image {
+    border: 1px solid #dee2e6;
+}
+
+/* Caption */
+.venture-figure__caption {
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+.venture-figure--full .venture-figure__caption {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 900px) {
+    .venture-figure--full .venture-figure__caption {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+.venture-figure__text {
+    display: block;
+}
+
+.venture-figure__credit {
+    display: block;
+    font-size: 0.8rem;
+    color: #adb5bd;
+    margin-top: 0.25rem;
+    text-decoration: none;
+}
+
+.venture-figure__credit:hover {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+/* Float clearfix */
+.venture-figure--left + *,
+.venture-figure--right + * {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .venture-figure--left,
+    .venture-figure--right {
+        float: none;
+        margin: 2rem 0;
+    }
+}
+</style>

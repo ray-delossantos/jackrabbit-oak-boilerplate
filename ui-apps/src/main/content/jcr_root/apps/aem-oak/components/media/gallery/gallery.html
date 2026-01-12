@@ -1,0 +1,286 @@
+<!--/*
+    VENTURE Gallery Component
+    Image gallery with lightbox support
+*/-->
+<sly data-sly-use.gallery="com.aem.oak.models.media.GalleryModel"></sly>
+
+<div class="venture-gallery ${gallery.layoutClass}"
+     data-sly-test="${gallery.hasImages}"
+     data-lightbox="${gallery.enableLightbox}">
+
+    <!-- Title -->
+    <h3 class="venture-gallery__title" data-sly-test="${gallery.title}">${gallery.title}</h3>
+
+    <!-- Gallery Grid -->
+    <div class="venture-gallery__grid"
+         style="${gallery.gridColumnsStyle} gap: ${gallery.gap};">
+        <sly data-sly-list.image="${gallery.images}">
+            <figure class="venture-gallery__item">
+                <a href="${image.src}"
+                   class="venture-gallery__link"
+                   data-sly-test="${gallery.enableLightbox}"
+                   data-caption="${image.caption}">
+                    <img src="${image.thumbnail}"
+                         alt="${image.alt}"
+                         class="venture-gallery__image"
+                         loading="lazy">
+                </a>
+                <img src="${image.thumbnail}"
+                     alt="${image.alt}"
+                     class="venture-gallery__image"
+                     loading="lazy"
+                     data-sly-test="${!gallery.enableLightbox}">
+                <figcaption class="venture-gallery__caption"
+                            data-sly-test="${image.hasCaption}">${image.caption}</figcaption>
+            </figure>
+        </sly>
+    </div>
+
+    <!-- Image count -->
+    <p class="venture-gallery__count">${gallery.imageCount} images</p>
+</div>
+
+<!-- Lightbox Modal -->
+<div class="venture-lightbox" id="ventureLightbox" data-sly-test="${gallery.enableLightbox}">
+    <button class="venture-lightbox__close" aria-label="Close">&times;</button>
+    <button class="venture-lightbox__prev" aria-label="Previous">&#10094;</button>
+    <button class="venture-lightbox__next" aria-label="Next">&#10095;</button>
+    <div class="venture-lightbox__content">
+        <img class="venture-lightbox__image" src="" alt="">
+        <p class="venture-lightbox__caption"></p>
+    </div>
+</div>
+
+<style>
+.venture-gallery {
+    margin: 2rem 0;
+}
+
+.venture-gallery__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+}
+
+.venture-gallery__grid {
+    display: grid;
+}
+
+@media (max-width: 768px) {
+    .venture-gallery__grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .venture-gallery__grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.venture-gallery__item {
+    margin: 0;
+    overflow: hidden;
+}
+
+.venture-gallery__link {
+    display: block;
+    position: relative;
+}
+
+.venture-gallery__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+}
+
+.venture-gallery__link:hover::after {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.venture-gallery__image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.venture-gallery__link:hover .venture-gallery__image {
+    transform: scale(1.05);
+}
+
+.venture-gallery__caption {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-align: center;
+}
+
+.venture-gallery__count {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Masonry Layout */
+.venture-gallery--masonry .venture-gallery__grid {
+    column-count: 3;
+    column-gap: 1rem;
+    display: block;
+}
+
+.venture-gallery--masonry .venture-gallery__item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+}
+
+.venture-gallery--masonry .venture-gallery__image {
+    aspect-ratio: auto;
+    height: auto;
+}
+
+/* Lightbox */
+.venture-lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    align-items: center;
+    justify-content: center;
+}
+
+.venture-lightbox.active {
+    display: flex;
+}
+
+.venture-lightbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2.5rem;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 1;
+}
+
+.venture-lightbox__prev,
+.venture-lightbox__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.venture-lightbox__prev:hover,
+.venture-lightbox__next:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.venture-lightbox__prev { left: 1rem; }
+.venture-lightbox__next { right: 1rem; }
+
+.venture-lightbox__content {
+    text-align: center;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.venture-lightbox__image {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.venture-lightbox__caption {
+    color: #fff;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+</style>
+
+<script>
+(function() {
+    const galleries = document.querySelectorAll('.venture-gallery[data-lightbox="true"]');
+
+    galleries.forEach(function(gallery) {
+        const links = gallery.querySelectorAll('.venture-gallery__link');
+        const lightbox = document.getElementById('ventureLightbox');
+        if (!lightbox) return;
+
+        const lightboxImg = lightbox.querySelector('.venture-lightbox__image');
+        const lightboxCaption = lightbox.querySelector('.venture-lightbox__caption');
+        const closeBtn = lightbox.querySelector('.venture-lightbox__close');
+        const prevBtn = lightbox.querySelector('.venture-lightbox__prev');
+        const nextBtn = lightbox.querySelector('.venture-lightbox__next');
+
+        let currentIndex = 0;
+        const images = Array.from(links);
+
+        function showImage(index) {
+            if (index < 0) index = images.length - 1;
+            if (index >= images.length) index = 0;
+            currentIndex = index;
+
+            const link = images[index];
+            lightboxImg.src = link.href;
+            lightboxCaption.textContent = link.dataset.caption || '';
+        }
+
+        links.forEach(function(link, index) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                showImage(index);
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeBtn.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        prevBtn.addEventListener('click', function() {
+            showImage(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', function() {
+            showImage(currentIndex + 1);
+        });
+
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            } else if (e.key === 'ArrowLeft') {
+                showImage(currentIndex - 1);
+            } else if (e.key === 'ArrowRight') {
+                showImage(currentIndex + 1);
+            }
+        });
+    });
+})();
+</script>

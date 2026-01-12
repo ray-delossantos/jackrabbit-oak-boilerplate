@@ -1,0 +1,142 @@
+<!--/*
+    VENTURE Pagination Component
+    Page navigation with numbers
+*/-->
+<sly data-sly-use.pagination="com.aem.oak.models.navigation.PaginationModel"></sly>
+
+<nav class="venture-pagination" aria-label="Pagination" data-sly-test="${pagination.hasPagination}">
+    <!-- Previous -->
+    <a href="${pagination.previousUrl}"
+       class="venture-pagination__link venture-pagination__link--prev"
+       aria-label="Previous page"
+       data-sly-test="${pagination.hasPrevious && pagination.showPrevNext}">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Previous</span>
+    </a>
+    <span class="venture-pagination__link venture-pagination__link--prev venture-pagination__link--disabled"
+          data-sly-test="${!pagination.hasPrevious && pagination.showPrevNext}">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Previous</span>
+    </span>
+
+    <!-- Page Numbers -->
+    <div class="venture-pagination__pages">
+        <sly data-sly-list.page="${pagination.pages}">
+            <!-- Ellipsis -->
+            <span class="venture-pagination__ellipsis" data-sly-test="${page.ellipsis}">...</span>
+
+            <!-- Active Page -->
+            <span class="venture-pagination__page venture-pagination__page--active"
+                  aria-current="page"
+                  data-sly-test="${!page.ellipsis && page.active}">${page.number}</span>
+
+            <!-- Regular Page Link -->
+            <a href="${page.url}"
+               class="venture-pagination__page"
+               data-sly-test="${!page.ellipsis && !page.active}">${page.number}</a>
+        </sly>
+    </div>
+
+    <!-- Next -->
+    <a href="${pagination.nextUrl}"
+       class="venture-pagination__link venture-pagination__link--next"
+       aria-label="Next page"
+       data-sly-test="${pagination.hasNext && pagination.showPrevNext}">
+        <span>Next</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+        </svg>
+    </a>
+    <span class="venture-pagination__link venture-pagination__link--next venture-pagination__link--disabled"
+          data-sly-test="${!pagination.hasNext && pagination.showPrevNext}">
+        <span>Next</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+        </svg>
+    </span>
+</nav>
+
+<style>
+.venture-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.venture-pagination__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    color: var(--venture-dark, #202020);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid var(--venture-dark, #202020);
+    transition: all 0.2s ease;
+}
+
+.venture-pagination__link:hover {
+    background: var(--venture-dark, #202020);
+    color: #fff;
+}
+
+.venture-pagination__link--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.venture-pagination__pages {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0 1rem;
+}
+
+.venture-pagination__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.5rem;
+    color: var(--venture-dark, #202020);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.venture-pagination__page:hover {
+    background: #f8f9fa;
+}
+
+.venture-pagination__page--active {
+    background: var(--venture-yellow, #FFEA00);
+    color: var(--venture-dark, #202020);
+    font-weight: 700;
+}
+
+.venture-pagination__ellipsis {
+    padding: 0 0.5rem;
+    color: #6c757d;
+}
+
+@media (max-width: 600px) {
+    .venture-pagination__link span {
+        display: none;
+    }
+
+    .venture-pagination__link {
+        padding: 0.625rem;
+    }
+}
+</style>

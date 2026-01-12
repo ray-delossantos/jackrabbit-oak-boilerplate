@@ -1,0 +1,137 @@
+<!--/*
+    VENTURE Video Component
+    YouTube, Vimeo, and self-hosted video player
+*/-->
+<sly data-sly-use.video="com.aem.oak.models.media.VideoModel"></sly>
+
+<figure class="venture-video ${video.aspectRatioClass}" data-sly-test="${video.hasContent}">
+    <!-- YouTube Embed -->
+    <div class="venture-video__wrapper" data-sly-test="${video.isYouTube}">
+        <iframe src="${video.embedUrl}"
+                title="${video.title || 'Video'}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+    </div>
+
+    <!-- Vimeo Embed -->
+    <div class="venture-video__wrapper" data-sly-test="${video.isVimeo}">
+        <iframe src="${video.embedUrl}"
+                title="${video.title || 'Video'}"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+    </div>
+
+    <!-- Self-hosted Video -->
+    <div class="venture-video__wrapper" data-sly-test="${video.isSelfHosted}">
+        <video class="venture-video__player"
+               poster="${video.posterImage}"
+               controls="${video.controls ? 'controls' : ''}"
+               autoplay="${video.autoplay ? 'autoplay' : ''}"
+               loop="${video.loop ? 'loop' : ''}"
+               muted="${video.muted ? 'muted' : ''}"
+               playsinline>
+            <source src="${video.videoFile}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Caption -->
+    <figcaption class="venture-video__caption" data-sly-test="${video.caption}">
+        ${video.caption}
+    </figcaption>
+</figure>
+
+<style>
+.venture-video {
+    margin: 2rem 0;
+}
+
+.venture-video__wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+/* Aspect Ratios */
+.venture-video--16-9 .venture-video__wrapper {
+    padding-bottom: 56.25%;
+}
+
+.venture-video--4-3 .venture-video__wrapper {
+    padding-bottom: 75%;
+}
+
+.venture-video--1-1 .venture-video__wrapper {
+    padding-bottom: 100%;
+}
+
+.venture-video--21-9 .venture-video__wrapper {
+    padding-bottom: 42.86%;
+}
+
+.venture-video__wrapper iframe,
+.venture-video__wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.venture-video__player {
+    object-fit: cover;
+}
+
+.venture-video__caption {
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Play button overlay for lazy loading */
+.venture-video__poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+}
+
+.venture-video__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.venture-video__poster:hover .venture-video__play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: var(--venture-yellow, #FFEA00);
+}
+
+.venture-video__play-btn::after {
+    content: "";
+    border-style: solid;
+    border-width: 15px 0 15px 25px;
+    border-color: transparent transparent transparent var(--venture-dark, #202020);
+    margin-left: 5px;
+}
+</style>

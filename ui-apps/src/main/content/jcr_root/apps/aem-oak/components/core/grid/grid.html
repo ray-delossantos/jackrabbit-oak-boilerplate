@@ -1,0 +1,13 @@
+<!--/*
+    VENTURE Grid Component
+    Responsive grid layout with 2/3/4 column options
+*/-->
+<sly data-sly-use.grid="com.aem.oak.models.core.GridModel"></sly>
+
+<div class="venture-grid venture-grid--${grid.columns || '3'} ${grid.cssClass}"
+     style="${grid.computedStyles}">
+
+    <!--/* Render child components */-->
+    <sly data-sly-resource="${'par' @ resourceType='aem-oak/components/parsys'}"></sly>
+
+</div>

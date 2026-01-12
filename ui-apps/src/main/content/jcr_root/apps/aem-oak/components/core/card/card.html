@@ -1,0 +1,52 @@
+<!--/*
+    VENTURE Card Component
+    Content card with image, category, title, excerpt and link
+*/-->
+<sly data-sly-use.card="com.aem.oak.models.core.CardModel"></sly>
+
+<article class="venture-card ${card.cssClass}" data-sly-test="${card.hasContent}">
+
+    <!--/* Card Image */-->
+    <div class="venture-card__image" data-sly-test="${card.image}">
+        <a href="${card.link}" data-sly-test="${card.link}">
+            <img src="${card.image}"
+                 alt="${card.imageAlt || card.title}"
+                 loading="lazy">
+        </a>
+        <img src="${card.image}"
+             alt="${card.imageAlt || card.title}"
+             loading="lazy"
+             data-sly-test="${!card.link}">
+
+        <!--/* Category Badge */-->
+        <span class="venture-card__category"
+              data-sly-test="${card.category}">${card.category}</span>
+    </div>
+
+    <!--/* Card Content */-->
+    <div class="venture-card__content">
+        <h3 class="venture-card__title">
+            <a href="${card.link}" data-sly-test="${card.link}">${card.title}</a>
+            <span data-sly-test="${!card.link}">${card.title}</span>
+        </h3>
+
+        <p class="venture-card__excerpt"
+           data-sly-test="${card.excerpt}">${card.excerpt}</p>
+
+        <div class="venture-card__meta" data-sly-test="${card.author || card.date}">
+            <span data-sly-test="${card.author}">${card.author}</span>
+            <span data-sly-test="${card.date}">${card.formattedDate}</span>
+        </div>
+
+        <a href="${card.link}"
+           class="venture-btn venture-btn--outline venture-btn--small"
+           data-sly-test="${card.ctaText}">
+            ${card.ctaText}
+        </a>
+    </div>
+</article>
+
+<!--/* Empty state */-->
+<div class="component-placeholder" data-sly-test="${!card.hasContent}">
+    <p>Card Component - Add a title</p>
+</div>

@@ -1,0 +1,69 @@
+<!--/*
+    VENTURE Reading Time Component
+    Estimated reading time display
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<span class="venture-reading-time ${properties.style || ''}"
+      data-sly-test="${properties.minutes || properties.wordCount}">
+    <svg class="venture-reading-time__icon"
+         viewBox="0 0 24 24"
+         width="16"
+         height="16"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         data-sly-test="${properties.showIcon != 'false'}">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+    </svg>
+    <span class="venture-reading-time__text">
+        <sly data-sly-test="${properties.minutes}">
+            ${properties.minutes} min read
+        </sly>
+        <sly data-sly-test="${!properties.minutes && properties.wordCount}">
+            <!-- Calculate from word count: ~200 words per minute -->
+            ${properties.wordCount / 200 @ i18n, format='0'} min read
+        </sly>
+    </span>
+</span>
+
+<style>
+.venture-reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.venture-reading-time__icon {
+    flex-shrink: 0;
+}
+
+.venture-reading-time--compact {
+    font-size: 0.75rem;
+}
+
+.venture-reading-time--compact .venture-reading-time__icon {
+    width: 14px;
+    height: 14px;
+}
+
+.venture-reading-time--large {
+    font-size: 1rem;
+}
+
+.venture-reading-time--large .venture-reading-time__icon {
+    width: 18px;
+    height: 18px;
+}
+
+.venture-reading-time--accent {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-reading-time--dark {
+    color: var(--venture-dark, #202020);
+}
+</style>

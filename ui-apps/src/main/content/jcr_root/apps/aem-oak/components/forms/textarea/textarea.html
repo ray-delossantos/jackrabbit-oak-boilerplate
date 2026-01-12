@@ -1,0 +1,113 @@
+<!--/*
+    VENTURE Textarea Component
+    Multi-line text field
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-field venture-field--textarea ${properties.required ? 'venture-field--required' : ''}">
+    <label for="${properties.name}"
+           class="venture-field__label"
+           data-sly-test="${properties.label}">${properties.label}
+        <span class="venture-field__required" data-sly-test="${properties.required}">*</span>
+    </label>
+
+    <textarea id="${properties.name}"
+              name="${properties.name}"
+              class="venture-field__textarea"
+              placeholder="${properties.placeholder}"
+              rows="${properties.rows || 5}"
+              required="${properties.required ? 'required' : ''}"
+              minlength="${properties.minLength}"
+              maxlength="${properties.maxLength}">${properties.defaultValue}</textarea>
+
+    <div class="venture-field__footer">
+        <span class="venture-field__hint"
+              data-sly-test="${properties.hint}">${properties.hint}</span>
+        <span class="venture-field__counter"
+              data-sly-test="${properties.maxLength}"
+              data-max="${properties.maxLength}">0 / ${properties.maxLength}</span>
+    </div>
+    <span class="venture-field__error"
+          data-sly-test="${properties.errorMessage}">${properties.errorMessage}</span>
+</div>
+
+<style>
+.venture-field--textarea {
+    display: flex;
+    flex-direction: column;
+}
+
+.venture-field__textarea {
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venture-field__textarea:focus {
+    outline: none;
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-field__textarea:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-field__textarea::placeholder {
+    color: #adb5bd;
+}
+
+.venture-field__footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.375rem;
+}
+
+.venture-field__counter {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.venture-field__counter.warning {
+    color: #ffc107;
+}
+
+.venture-field__counter.danger {
+    color: var(--venture-coral, #FF6B6B);
+}
+</style>
+
+<script>
+(function() {
+    const textareas = document.querySelectorAll('.venture-field--textarea');
+
+    textareas.forEach(function(field) {
+        const textarea = field.querySelector('.venture-field__textarea');
+        const counter = field.querySelector('.venture-field__counter');
+
+        if (textarea && counter) {
+            const max = parseInt(counter.dataset.max);
+
+            function updateCounter() {
+                const count = textarea.value.length;
+                counter.textContent = count + ' / ' + max;
+
+                counter.classList.remove('warning', 'danger');
+                if (count > max * 0.9) {
+                    counter.classList.add('danger');
+                } else if (count > max * 0.75) {
+                    counter.classList.add('warning');
+                }
+            }
+
+            textarea.addEventListener('input', updateCounter);
+            updateCounter();
+        }
+    });
+})();
+</script>

@@ -1,0 +1,24 @@
+<!--/*
+    VENTURE Container Component
+    Section wrapper with background styling options
+*/-->
+<sly data-sly-use.container="com.aem.oak.models.core.ContainerModel"></sly>
+
+<section class="venture-section ${container.themeClass} ${container.cssClass}"
+         style="${container.computedStyles}"
+         id="${container.anchorId}">
+
+    <div class="venture-container ${container.widthClass}">
+
+        <!--/* Section Header */-->
+        <div class="venture-section__header" data-sly-test="${container.title}">
+            <h2 class="venture-section__title">${container.title}</h2>
+            <p class="venture-section__subtitle"
+               data-sly-test="${container.subtitle}">${container.subtitle}</p>
+        </div>
+
+        <!--/* Child Components */-->
+        <sly data-sly-resource="${'par' @ resourceType='aem-oak/components/parsys'}"></sly>
+
+    </div>
+</section>

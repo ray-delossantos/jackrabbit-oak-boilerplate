@@ -1,0 +1,55 @@
+<!--/*
+    VENTURE Hero Component
+    Full-width banner with background image, title, subtitle and CTA buttons
+*/-->
+<sly data-sly-use.hero="com.aem.oak.models.core.HeroModel"></sly>
+
+<section class="venture-hero venture-hero--${hero.size || 'medium'}"
+         data-sly-test="${hero.hasContent}">
+
+    <!--/* Background Image */-->
+    <div class="venture-hero__background" data-sly-test="${hero.backgroundImage}">
+        <img src="${hero.backgroundImage}"
+             alt="${hero.backgroundAlt || hero.title}"
+             loading="eager">
+    </div>
+
+    <!--/* Overlay */-->
+    <div class="venture-hero__overlay"
+         style="background: ${hero.overlayGradient}"></div>
+
+    <!--/* Content */-->
+    <div class="venture-hero__content">
+        <!--/* Category Tag */-->
+        <span class="venture-hero__category"
+              data-sly-test="${hero.category}">${hero.category}</span>
+
+        <!--/* Title */-->
+        <h1 class="venture-hero__title">${hero.title}</h1>
+
+        <!--/* Subtitle */-->
+        <p class="venture-hero__subtitle"
+           data-sly-test="${hero.subtitle}">${hero.subtitle}</p>
+
+        <!--/* CTA Buttons */-->
+        <div class="venture-hero__cta" data-sly-test="${hero.hasCta}">
+            <a href="${hero.primaryCtaLink}"
+               class="venture-btn venture-btn--primary venture-btn--large"
+               data-sly-test="${hero.primaryCtaText}">
+                ${hero.primaryCtaText}
+            </a>
+            <a href="${hero.secondaryCtaLink}"
+               class="venture-btn venture-btn--outline venture-btn--large"
+               data-sly-test="${hero.secondaryCtaText}"
+               style="border-color: white; color: white;">
+                ${hero.secondaryCtaText}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!--/* Empty state for authoring */-->
+<div class="component-placeholder"
+     data-sly-test="${!hero.hasContent}">
+    <p>Hero Component - Add a title and background image</p>
+</div>

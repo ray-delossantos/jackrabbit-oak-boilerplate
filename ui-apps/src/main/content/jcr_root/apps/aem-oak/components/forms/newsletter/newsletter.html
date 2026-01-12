@@ -1,0 +1,256 @@
+<!--/*
+    VENTURE Newsletter Component
+    Email signup form
+*/-->
+<sly data-sly-use.newsletter="com.aem.oak.models.forms.NewsletterModel"></sly>
+
+<section class="venture-newsletter ${newsletter.styleClass}">
+    <div class="venture-newsletter__content">
+        <h3 class="venture-newsletter__title" data-sly-test="${newsletter.hasTitle}">${newsletter.title}</h3>
+        <p class="venture-newsletter__description" data-sly-test="${newsletter.hasDescription}">${newsletter.description}</p>
+    </div>
+
+    <form class="venture-newsletter__form"
+          action="${newsletter.action}"
+          method="POST"
+          data-success="${newsletter.successMessage}">
+        <div class="venture-newsletter__input-group">
+            <input type="email"
+                   name="email"
+                   class="venture-newsletter__input"
+                   placeholder="${newsletter.placeholder}"
+                   required
+                   aria-label="Email address">
+            <button type="submit" class="venture-newsletter__submit">
+                <span class="venture-newsletter__submit-text">${newsletter.buttonText}</span>
+                <span class="venture-newsletter__submit-loading" style="display: none;">
+                    <svg class="venture-spinner" viewBox="0 0 24 24" width="18" height="18">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4" stroke-dashoffset="10"/>
+                    </svg>
+                </span>
+            </button>
+        </div>
+        <div class="venture-newsletter__messages">
+            <div class="venture-newsletter__success" style="display: none;"></div>
+            <div class="venture-newsletter__error" style="display: none;"></div>
+        </div>
+        <p class="venture-newsletter__privacy" data-sly-test="${newsletter.showPrivacyNote}">${newsletter.privacyNote}</p>
+    </form>
+</section>
+
+<style>
+.venture-newsletter {
+    padding: 2rem;
+}
+
+/* Default Style */
+.venture-newsletter--default {
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Dark Style */
+.venture-newsletter--dark {
+    background: var(--venture-dark, #202020);
+    color: #fff;
+}
+
+.venture-newsletter--dark .venture-newsletter__title {
+    color: #fff;
+}
+
+.venture-newsletter--dark .venture-newsletter__description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.venture-newsletter--dark .venture-newsletter__input {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.venture-newsletter--dark .venture-newsletter__input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Card Style */
+.venture-newsletter--card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Minimal Style */
+.venture-newsletter--minimal {
+    background: transparent;
+    padding: 0;
+}
+
+/* Banner Style */
+.venture-newsletter--banner {
+    background: var(--venture-yellow, #FFEA00);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.venture-newsletter--banner .venture-newsletter__content {
+    flex: 1;
+    min-width: 250px;
+}
+
+.venture-newsletter--banner .venture-newsletter__form {
+    flex: 1;
+    min-width: 300px;
+}
+
+.venture-newsletter--banner .venture-newsletter__submit {
+    background: var(--venture-dark, #202020);
+    color: #fff;
+}
+
+/* Common Styles */
+.venture-newsletter__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-newsletter__description {
+    color: #6c757d;
+    margin: 0 0 1.5rem 0;
+}
+
+.venture-newsletter__input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+    .venture-newsletter__input-group {
+        flex-direction: column;
+    }
+}
+
+.venture-newsletter__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.venture-newsletter__input:focus {
+    outline: none;
+    border-color: var(--venture-yellow, #FFEA00);
+}
+
+.venture-newsletter__submit {
+    padding: 0.75rem 1.5rem;
+    background: var(--venture-coral, #FF6B6B);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.venture-newsletter__submit:hover {
+    background: #ff5252;
+}
+
+.venture-newsletter__submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.venture-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.venture-newsletter__messages {
+    margin-top: 0.75rem;
+}
+
+.venture-newsletter__success {
+    color: #28a745;
+    font-size: 0.9rem;
+}
+
+.venture-newsletter__error {
+    color: var(--venture-coral, #FF6B6B);
+    font-size: 0.9rem;
+}
+
+.venture-newsletter__privacy {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin: 1rem 0 0 0;
+}
+</style>
+
+<script>
+(function() {
+    const newsletters = document.querySelectorAll('.venture-newsletter__form');
+
+    newsletters.forEach(function(form) {
+        const submitBtn = form.querySelector('.venture-newsletter__submit');
+        const submitText = form.querySelector('.venture-newsletter__submit-text');
+        const submitLoading = form.querySelector('.venture-newsletter__submit-loading');
+        const successMsg = form.querySelector('.venture-newsletter__success');
+        const errorMsg = form.querySelector('.venture-newsletter__error');
+        const successText = form.dataset.success;
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = form.querySelector('input[type="email"]').value;
+            if (!email) return;
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-flex';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            // Submit
+            const formData = new FormData(form);
+
+            fetch(form.action || '/bin/newsletter', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    successMsg.textContent = successText;
+                    successMsg.style.display = 'block';
+                    form.reset();
+                } else {
+                    throw new Error('Subscription failed');
+                }
+            })
+            .catch(function() {
+                errorMsg.textContent = 'Something went wrong. Please try again.';
+                errorMsg.style.display = 'block';
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            });
+        });
+    });
+})();
+</script>

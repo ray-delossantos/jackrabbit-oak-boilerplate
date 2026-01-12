@@ -1,0 +1,82 @@
+<!--/*
+    VENTURE Select Component
+    Dropdown select field
+*/-->
+<sly data-sly-use.properties="org.apache.sling.api.resource.ValueMap"></sly>
+
+<div class="venture-field venture-field--select ${properties.required ? 'venture-field--required' : ''}">
+    <label for="${properties.name}"
+           class="venture-field__label"
+           data-sly-test="${properties.label}">${properties.label}
+        <span class="venture-field__required" data-sly-test="${properties.required}">*</span>
+    </label>
+
+    <div class="venture-field__select-wrapper">
+        <select id="${properties.name}"
+                name="${properties.name}"
+                class="venture-field__select"
+                required="${properties.required ? 'required' : ''}">
+            <option value="" disabled selected data-sly-test="${properties.placeholder}">
+                ${properties.placeholder}
+            </option>
+            <sly data-sly-list.option="${properties.options}">
+                <option value="${option.value}">${option.label}</option>
+            </sly>
+        </select>
+        <svg class="venture-field__select-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+        </svg>
+    </div>
+
+    <span class="venture-field__hint"
+          data-sly-test="${properties.hint}">${properties.hint}</span>
+    <span class="venture-field__error"
+          data-sly-test="${properties.errorMessage}">${properties.errorMessage}</span>
+</div>
+
+<style>
+.venture-field--select {
+    display: flex;
+    flex-direction: column;
+}
+
+.venture-field__select-wrapper {
+    position: relative;
+}
+
+.venture-field__select {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+    cursor: pointer;
+    appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venture-field__select:focus {
+    outline: none;
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-field__select:invalid:not(:focus) {
+    color: #6c757d;
+}
+
+.venture-field__select-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6c757d;
+}
+
+.venture-field__select option {
+    color: var(--venture-dark, #202020);
+}
+</style>

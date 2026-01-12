@@ -1,0 +1,262 @@
+<!--/*
+    VENTURE Adventure Map Component
+    Interactive location map with markers
+*/-->
+<sly data-sly-use.map="com.aem.oak.models.specialty.MapModel"></sly>
+
+<section class="venture-map" data-sly-test="${map.hasContent}">
+    <h3 class="venture-map__title" data-sly-test="${map.hasTitle}">${map.title}</h3>
+
+    <div class="venture-map__container"
+         id="venture-map-${map @ hashCode}"
+         style="height: ${map.height};"
+         data-center-lat="${map.centerLat}"
+         data-center-lng="${map.centerLng}"
+         data-zoom="${map.zoom}"
+         data-locations='${map.locationsJson}'>
+        <!-- Map will be rendered here -->
+        <div class="venture-map__fallback">
+            <p>Interactive map loading...</p>
+            <noscript>
+                <p>JavaScript is required to view this map.</p>
+            </noscript>
+        </div>
+    </div>
+
+    <!-- Location List (fallback/accessible) -->
+    <div class="venture-map__list">
+        <h4 class="venture-map__list-title">Locations</h4>
+        <ul class="venture-map__locations">
+            <sly data-sly-list.location="${map.locations}">
+                <li class="venture-map__location">
+                    <a href="${location.link}"
+                       class="venture-map__location-link"
+                       data-sly-test="${location.link}">
+                        <strong>${location.name}</strong>
+                        <span data-sly-test="${location.category}">${location.category}</span>
+                    </a>
+                    <span data-sly-test="${!location.link}">
+                        <strong>${location.name}</strong>
+                        <span data-sly-test="${location.category}">${location.category}</span>
+                    </span>
+                    <p data-sly-test="${location.description}">${location.description}</p>
+                </li>
+            </sly>
+        </ul>
+    </div>
+</section>
+
+<style>
+.venture-map {
+    margin: 2rem 0;
+}
+
+.venture-map__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 1rem 0;
+}
+
+.venture-map__container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e9ecef;
+}
+
+.venture-map__fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.venture-map__fallback p {
+    margin: 0;
+}
+
+/* Leaflet map styles */
+.venture-map__container .leaflet-container {
+    height: 100%;
+    width: 100%;
+}
+
+.venture-map__popup {
+    min-width: 200px;
+}
+
+.venture-map__popup-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.venture-map__popup-title {
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+.venture-map__popup-category {
+    display: inline-block;
+    background: var(--venture-yellow, #FFEA00);
+    color: var(--venture-dark, #202020);
+    padding: 0.125rem 0.375rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.venture-map__popup-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin: 0 0 0.75rem 0;
+}
+
+.venture-map__popup-link {
+    color: var(--venture-coral, #FF6B6B);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.venture-map__popup-link:hover {
+    text-decoration: underline;
+}
+
+/* Location list */
+.venture-map__list {
+    margin-top: 1.5rem;
+}
+
+.venture-map__list-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+}
+
+.venture-map__locations {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.venture-map__location {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.venture-map__location-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.venture-map__location-link:hover strong {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-map__location strong {
+    display: block;
+    color: var(--venture-dark, #202020);
+}
+
+.venture-map__location span {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.venture-map__location p {
+    font-size: 0.875rem;
+    margin: 0.5rem 0 0 0;
+    color: #495057;
+}
+</style>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+
+<script>
+(function() {
+    // Load Leaflet
+    if (!window.L) {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.crossOrigin = '';
+        script.onload = initMaps;
+        document.head.appendChild(script);
+    } else {
+        initMaps();
+    }
+
+    function initMaps() {
+        const mapContainers = document.querySelectorAll('.venture-map__container');
+
+        mapContainers.forEach(function(container) {
+            const centerLat = parseFloat(container.dataset.centerLat) || 0;
+            const centerLng = parseFloat(container.dataset.centerLng) || 0;
+            const zoom = parseInt(container.dataset.zoom) || 4;
+            const locations = JSON.parse(container.dataset.locations || '[]');
+
+            // Hide fallback
+            const fallback = container.querySelector('.venture-map__fallback');
+            if (fallback) fallback.style.display = 'none';
+
+            // Create map
+            const map = L.map(container).setView([centerLat, centerLng], zoom);
+
+            // Add tile layer (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add markers
+            locations.forEach(function(loc) {
+                if (loc.lat && loc.lng) {
+                    const marker = L.marker([loc.lat, loc.lng]).addTo(map);
+
+                    let popupContent = '<div class="venture-map__popup">';
+                    if (loc.image) {
+                        popupContent += '<img src="' + loc.image + '" alt="' + loc.name + '" class="venture-map__popup-image">';
+                    }
+                    popupContent += '<h4 class="venture-map__popup-title">' + loc.name + '</h4>';
+                    if (loc.category) {
+                        popupContent += '<span class="venture-map__popup-category">' + loc.category + '</span>';
+                    }
+                    if (loc.description) {
+                        popupContent += '<p class="venture-map__popup-description">' + loc.description + '</p>';
+                    }
+                    if (loc.link) {
+                        popupContent += '<a href="' + loc.link + '" class="venture-map__popup-link">Read more →</a>';
+                    }
+                    popupContent += '</div>';
+
+                    marker.bindPopup(popupContent);
+                }
+            });
+
+            // Fit bounds if locations exist
+            if (locations.length > 0) {
+                const bounds = L.latLngBounds(locations.map(function(loc) {
+                    return [loc.lat, loc.lng];
+                }));
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        });
+    }
+})();
+</script>

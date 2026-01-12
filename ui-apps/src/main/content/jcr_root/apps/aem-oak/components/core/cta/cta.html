@@ -1,0 +1,17 @@
+<!--/*
+    VENTURE CTA Component
+    Call-to-action button with style variants
+*/-->
+<sly data-sly-use.cta="com.aem.oak.models.core.CtaModel"></sly>
+
+<a href="${cta.link}"
+   class="venture-btn ${cta.styleClass} ${cta.sizeClass}"
+   target="${cta.target}"
+   data-sly-test="${cta.hasContent}"
+   rel="${cta.target == '_blank' ? 'noopener noreferrer' : ''}">
+    ${cta.text}
+</a>
+
+<div class="component-placeholder" data-sly-test="${!cta.hasContent}">
+    <p>CTA Component - Add text and link</p>
+</div>

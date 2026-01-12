@@ -1,0 +1,134 @@
+<!--/*
+    VENTURE Embed Component
+    External content embed (iframes, social posts, maps)
+*/-->
+<sly data-sly-use.embed="com.aem.oak.models.media.EmbedModel"></sly>
+
+<figure class="venture-embed ${embed.aspectRatioClass} ${embed.responsive ? 'venture-embed--responsive' : ''}"
+        style="${embed.maxWidthStyle}"
+        data-sly-test="${embed.hasContent}">
+
+    <!-- Title -->
+    <h4 class="venture-embed__title" data-sly-test="${embed.title}">${embed.title}</h4>
+
+    <!-- Embed Wrapper -->
+    <div class="venture-embed__wrapper">
+        <!-- Direct HTML Embed Code -->
+        <sly data-sly-test="${embed.hasEmbedCode}">
+            ${embed.embedCode @ context='unsafe'}
+        </sly>
+
+        <!-- URL-based Embed (iframe) -->
+        <iframe src="${embed.embedUrl}"
+                data-sly-test="${!embed.hasEmbedCode && embed.hasEmbedUrl}"
+                frameborder="0"
+                allowfullscreen
+                loading="lazy"></iframe>
+    </div>
+
+    <!-- Caption -->
+    <figcaption class="venture-embed__caption" data-sly-test="${embed.hasCaption}">
+        ${embed.caption}
+    </figcaption>
+</figure>
+
+<style>
+.venture-embed {
+    margin: 2rem auto;
+}
+
+.venture-embed__title {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.venture-embed__wrapper {
+    position: relative;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+/* Responsive Aspect Ratios */
+.venture-embed--responsive .venture-embed__wrapper {
+    width: 100%;
+}
+
+.venture-embed--16-9 .venture-embed__wrapper {
+    padding-bottom: 56.25%;
+}
+
+.venture-embed--4-3 .venture-embed__wrapper {
+    padding-bottom: 75%;
+}
+
+.venture-embed--1-1 .venture-embed__wrapper {
+    padding-bottom: 100%;
+}
+
+.venture-embed--9-16 .venture-embed__wrapper {
+    padding-bottom: 177.78%;
+    max-width: 400px;
+}
+
+.venture-embed--auto .venture-embed__wrapper {
+    padding-bottom: 0;
+}
+
+.venture-embed--responsive .venture-embed__wrapper iframe,
+.venture-embed--responsive .venture-embed__wrapper embed,
+.venture-embed--responsive .venture-embed__wrapper object {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.venture-embed--auto iframe {
+    width: 100%;
+    min-height: 300px;
+}
+
+/* Non-responsive (fixed size) */
+.venture-embed:not(.venture-embed--responsive) .venture-embed__wrapper {
+    padding-bottom: 0;
+}
+
+.venture-embed:not(.venture-embed--responsive) iframe {
+    width: 100%;
+    min-height: 400px;
+}
+
+.venture-embed__caption {
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Social Embed Specific Styles */
+.venture-embed .twitter-tweet,
+.venture-embed .instagram-media {
+    margin: 0 auto !important;
+}
+
+/* Map Embed Styles */
+.venture-embed--map .venture-embed__wrapper {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+/* Code Embed Styles (CodePen, etc.) */
+.venture-embed--code .venture-embed__wrapper {
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<!-- Load social embed scripts -->
+<script data-sly-test="${embed.isTwitter}" async src="https://platform.twitter.com/widgets.js"></script>
+<script data-sly-test="${embed.isInstagram}" async src="//www.instagram.com/embed.js"></script>

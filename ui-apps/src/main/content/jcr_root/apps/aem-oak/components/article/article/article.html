@@ -1,0 +1,216 @@
+<!--/*
+    VENTURE Article Component
+    Full article template with header, content, and metadata
+*/-->
+<sly data-sly-use.article="com.aem.oak.models.article.ArticleModel"></sly>
+
+<article class="venture-article" data-sly-test="${article.hasContent}">
+    <!-- Article Header -->
+    <header class="venture-article__header">
+        <!-- Category Badge -->
+        <a href="${article.categoryLink}"
+           class="venture-article__category"
+           data-sly-test="${article.hasCategory}">${article.category}</a>
+
+        <!-- Title -->
+        <h1 class="venture-article__title">${article.title}</h1>
+
+        <!-- Subtitle -->
+        <p class="venture-article__subtitle"
+           data-sly-test="${article.subtitle}">${article.subtitle}</p>
+
+        <!-- Meta Information -->
+        <div class="venture-article__meta">
+            <!-- Author -->
+            <div class="venture-article__author" data-sly-test="${article.hasAuthor}">
+                <img src="${article.authorImage}"
+                     alt="${article.authorName}"
+                     class="venture-article__author-image"
+                     data-sly-test="${article.authorImage}">
+                <div class="venture-article__author-info">
+                    <a href="${article.authorLink}"
+                       class="venture-article__author-name">${article.authorName}</a>
+                </div>
+            </div>
+
+            <!-- Date & Reading Time -->
+            <div class="venture-article__date-time">
+                <time class="venture-article__date"
+                      data-sly-test="${article.formattedDate}">${article.formattedDate}</time>
+                <span class="venture-article__reading-time">${article.readingTime} min read</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Image -->
+    <figure class="venture-article__hero" data-sly-test="${article.heroImage}">
+        <img src="${article.heroImage}"
+             alt="${article.heroImageAlt}"
+             class="venture-article__hero-image">
+    </figure>
+
+    <!-- Article Content -->
+    <div class="venture-article__content">
+        <sly data-sly-resource="${'content' @ resourceType='wcm/foundation/components/parsys'}"></sly>
+    </div>
+
+    <!-- Share Buttons -->
+    <footer class="venture-article__footer">
+        <sly data-sly-resource="${'share' @ resourceType='aem-oak/components/article/share-buttons'}"></sly>
+    </footer>
+</article>
+
+<style>
+.venture-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.venture-article__header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.venture-article__category {
+    display: inline-block;
+    background: var(--venture-yellow, #FFEA00);
+    color: var(--venture-dark, #202020);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+
+.venture-article__category:hover {
+    background: var(--venture-dark, #202020);
+    color: var(--venture-yellow, #FFEA00);
+}
+
+.venture-article__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+    color: var(--venture-dark, #202020);
+}
+
+.venture-article__subtitle {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+}
+
+.venture-article__meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.venture-article__author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.venture-article__author-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.venture-article__author-name {
+    font-weight: 600;
+    color: var(--venture-dark, #202020);
+    text-decoration: none;
+}
+
+.venture-article__author-name:hover {
+    color: var(--venture-coral, #FF6B6B);
+}
+
+.venture-article__date-time {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.venture-article__date-time::before {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: #6c757d;
+    border-radius: 50%;
+}
+
+.venture-article__hero {
+    margin: 2rem -1rem 2rem -1rem;
+}
+
+@media (min-width: 900px) {
+    .venture-article__hero {
+        margin: 2rem calc(-50vw + 400px) 2rem calc(-50vw + 400px);
+    }
+}
+
+.venture-article__hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.venture-article__content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.venture-article__content p {
+    margin-bottom: 1.5rem;
+}
+
+.venture-article__content h2 {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 2rem;
+    margin: 3rem 0 1rem 0;
+}
+
+.venture-article__content h3 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+}
+
+.venture-article__content blockquote {
+    border-left: 4px solid var(--venture-yellow, #FFEA00);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #6c757d;
+}
+
+.venture-article__content img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+}
+
+.venture-article__footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #dee2e6;
+}
+</style>

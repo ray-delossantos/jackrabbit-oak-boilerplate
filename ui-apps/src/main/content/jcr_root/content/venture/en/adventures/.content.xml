@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Adventures"
+        jcr:description="Epic adventures from around the globe. From mountain peaks to ocean depths, discover incredible journeys."
+        sling:resourceType="aem-oak/components/specialty/category-page"
+        cq:template="/conf/venture/templates/category"
+        heroImage="/content/dam/venture/adventures/category-hero.jpg"
+        navTitle="Adventures"/>
+
+    <iceland-northern-lights
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Chasing the Northern Lights in Iceland"
+            jcr:description="A magical journey through Iceland's winter wonderland in pursuit of the aurora borealis."
+            sling:resourceType="aem-oak/components/article/article"
+            heroImage="/content/dam/venture/adventures/iceland-aurora.jpg"
+            category="Adventures"
+            categoryLink="/content/venture/en/adventures"
+            authorName="Sarah Chen"
+            authorImage="/content/dam/venture/authors/sarah-chen.jpg"
+            authorLink="/content/venture/en/authors/sarah-chen"
+            publishDate="2025-01-05T10:00:00.000Z"
+            readingTime="8"/>
+    </iceland-northern-lights>
+
+    <costa-rica-surfing
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Ultimate Surfing Guide to Costa Rica"
+            jcr:description="From beginner waves to world-class barrels, explore the best surf spots in Costa Rica."
+            sling:resourceType="aem-oak/components/article/article"
+            heroImage="/content/dam/venture/adventures/costa-rica-surf.jpg"
+            category="Adventures"
+            categoryLink="/content/venture/en/adventures"
+            authorName="Marcus Rodriguez"
+            authorImage="/content/dam/venture/authors/marcus-rodriguez.jpg"
+            authorLink="/content/venture/en/authors/marcus-rodriguez"
+            publishDate="2025-01-03T08:00:00.000Z"
+            readingTime="12"/>
+    </costa-rica-surfing>
+
+    <swiss-alps-hiking
+        jcr:primaryType="cq:Page">
+        <jcr:content
+            jcr:primaryType="cq:PageContent"
+            jcr:title="Hiking the Swiss Alps: A Complete Guide"
+            jcr:description="Everything you need to know about hiking in the Swiss Alps, from beginner trails to challenging peaks."
+            sling:resourceType="aem-oak/components/article/article"
+            heroImage="/content/dam/venture/adventures/swiss-alps.jpg"
+            category="Adventures"
+            categoryLink="/content/venture/en/adventures"
+            authorName="Emma Wilson"
+            authorImage="/content/dam/venture/authors/emma-wilson.jpg"
+            authorLink="/content/venture/en/authors/emma-wilson"
+            publishDate="2025-01-01T09:00:00.000Z"
+            readingTime="15"/>
+    </swiss-alps-hiking>
+</jcr:root>

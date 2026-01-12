@@ -1,0 +1,301 @@
+<!--/*
+    VENTURE Contact Form Component
+    Pre-built contact form
+*/-->
+<sly data-sly-use.contact="com.aem.oak.models.forms.ContactModel"></sly>
+
+<section class="venture-contact ${contact.styleClass}">
+    <div class="venture-contact__header" data-sly-test="${contact.hasTitle || contact.hasDescription}">
+        <h2 class="venture-contact__title" data-sly-test="${contact.hasTitle}">${contact.title}</h2>
+        <p class="venture-contact__description" data-sly-test="${contact.hasDescription}">${contact.description}</p>
+    </div>
+
+    <form class="venture-contact__form"
+          action="${contact.action}"
+          method="POST"
+          data-success="${contact.successMessage}">
+
+        <!-- Name Field -->
+        <div class="venture-field" data-sly-test="${contact.showName}">
+            <label for="contact-name" class="venture-field__label">
+                Name
+                <span class="venture-field__required" data-sly-test="${contact.nameRequired}">*</span>
+            </label>
+            <input type="text"
+                   id="contact-name"
+                   name="name"
+                   class="venture-field__input"
+                   placeholder="Your name"
+                   required="${contact.nameRequired ? 'required' : ''}"
+                   autocomplete="name">
+        </div>
+
+        <!-- Email Field -->
+        <div class="venture-field" data-sly-test="${contact.showEmail}">
+            <label for="contact-email" class="venture-field__label">
+                Email
+                <span class="venture-field__required" data-sly-test="${contact.emailRequired}">*</span>
+            </label>
+            <input type="email"
+                   id="contact-email"
+                   name="email"
+                   class="venture-field__input"
+                   placeholder="your@email.com"
+                   required="${contact.emailRequired ? 'required' : ''}"
+                   autocomplete="email">
+        </div>
+
+        <!-- Phone Field -->
+        <div class="venture-field" data-sly-test="${contact.showPhone}">
+            <label for="contact-phone" class="venture-field__label">
+                Phone
+                <span class="venture-field__required" data-sly-test="${contact.phoneRequired}">*</span>
+            </label>
+            <input type="tel"
+                   id="contact-phone"
+                   name="phone"
+                   class="venture-field__input"
+                   placeholder="Your phone number"
+                   required="${contact.phoneRequired ? 'required' : ''}"
+                   autocomplete="tel">
+        </div>
+
+        <!-- Subject Field -->
+        <div class="venture-field venture-field--full" data-sly-test="${contact.showSubject}">
+            <label for="contact-subject" class="venture-field__label">Subject</label>
+            <input type="text"
+                   id="contact-subject"
+                   name="subject"
+                   class="venture-field__input"
+                   placeholder="What's this about?">
+        </div>
+
+        <!-- Message Field -->
+        <div class="venture-field venture-field--full" data-sly-test="${contact.showMessage}">
+            <label for="contact-message" class="venture-field__label">
+                Message
+                <span class="venture-field__required" data-sly-test="${contact.messageRequired}">*</span>
+            </label>
+            <textarea id="contact-message"
+                      name="message"
+                      class="venture-field__textarea"
+                      placeholder="How can we help you?"
+                      rows="5"
+                      required="${contact.messageRequired ? 'required' : ''}"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="venture-contact__actions">
+            <button type="submit" class="venture-btn venture-btn--primary">
+                <span class="venture-contact__submit-text">${contact.buttonText}</span>
+                <span class="venture-contact__submit-loading" style="display: none;">
+                    <svg class="venture-spinner" viewBox="0 0 24 24" width="20" height="20">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4" stroke-dashoffset="10"/>
+                    </svg>
+                    Sending...
+                </span>
+            </button>
+        </div>
+
+        <!-- Messages -->
+        <div class="venture-contact__messages">
+            <div class="venture-contact__success" style="display: none;"></div>
+            <div class="venture-contact__error" style="display: none;">
+                Sorry, there was an error. Please try again.
+            </div>
+        </div>
+    </form>
+</section>
+
+<style>
+.venture-contact {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.venture-contact__header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.venture-contact__title {
+    font-family: var(--venture-font-heading, 'Asar', Georgia, serif);
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+}
+
+.venture-contact__description {
+    color: #6c757d;
+    font-size: 1.125rem;
+    margin: 0;
+}
+
+.venture-contact__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+    .venture-contact__form {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-contact__form .venture-field--full {
+    grid-column: 1 / -1;
+}
+
+.venture-contact__actions {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+}
+
+.venture-contact__submit-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.venture-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.venture-contact__messages {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+}
+
+.venture-contact__success {
+    padding: 1rem;
+    background: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.venture-contact__error {
+    padding: 1rem;
+    background: #f8d7da;
+    color: #721c24;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Side-by-side variant */
+.venture-contact--side-by-side {
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .venture-contact--side-by-side {
+        grid-template-columns: 1fr;
+    }
+}
+
+.venture-contact--side-by-side .venture-contact__header {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+/* Compact variant */
+.venture-contact--compact .venture-field__label {
+    font-size: 0.8rem;
+}
+
+.venture-contact--compact .venture-field__input,
+.venture-contact--compact .venture-field__textarea {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Input styles (inherits from text-input) */
+.venture-contact .venture-field__input,
+.venture-contact .venture-field__textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venture-contact .venture-field__input:focus,
+.venture-contact .venture-field__textarea:focus {
+    outline: none;
+    border-color: var(--venture-yellow, #FFEA00);
+    box-shadow: 0 0 0 3px rgba(255, 234, 0, 0.2);
+}
+
+.venture-contact .venture-field__textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+</style>
+
+<script>
+(function() {
+    const contactForms = document.querySelectorAll('.venture-contact__form');
+
+    contactForms.forEach(function(form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const submitText = form.querySelector('.venture-contact__submit-text');
+        const submitLoading = form.querySelector('.venture-contact__submit-loading');
+        const successMsg = form.querySelector('.venture-contact__success');
+        const errorMsg = form.querySelector('.venture-contact__error');
+        const successText = form.dataset.success;
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-flex';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            // Submit
+            const formData = new FormData(form);
+
+            fetch(form.action || '/bin/contact', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    successMsg.textContent = successText;
+                    successMsg.style.display = 'block';
+                    form.reset();
+                } else {
+                    throw new Error('Submission failed');
+                }
+            })
+            .catch(function() {
+                errorMsg.style.display = 'block';
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            });
+        });
+    });
+})();
+</script>

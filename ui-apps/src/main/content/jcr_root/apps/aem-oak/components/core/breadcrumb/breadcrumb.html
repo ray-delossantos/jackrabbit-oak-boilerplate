@@ -1,0 +1,54 @@
+<!--/*
+    VENTURE Breadcrumb Component
+    Navigation trail showing page hierarchy
+*/-->
+<sly data-sly-use.breadcrumb="com.aem.oak.models.core.BreadcrumbModel"></sly>
+
+<nav class="venture-breadcrumb" aria-label="Breadcrumb" data-sly-test="${breadcrumb.items}">
+    <ol class="venture-breadcrumb__list">
+        <sly data-sly-list.item="${breadcrumb.items}">
+            <li class="venture-breadcrumb__item ${item.active ? 'venture-breadcrumb__item--active' : ''}">
+                <a href="${item.url}"
+                   class="venture-breadcrumb__link"
+                   data-sly-test="${!item.active}"
+                   aria-current="${item.active ? 'page' : ''}">${item.title}</a>
+                <span data-sly-test="${item.active}"
+                      aria-current="page">${item.title}</span>
+            </li>
+        </sly>
+    </ol>
+</nav>
+
+<style>
+.venture-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    font-size: 0.875rem;
+}
+
+.venture-breadcrumb__item:not(:last-child)::after {
+    content: "/";
+    margin-left: 0.5rem;
+    color: #adb5bd;
+}
+
+.venture-breadcrumb__link {
+    color: #6c757d;
+    text-decoration: none;
+}
+
+.venture-breadcrumb__link:hover {
+    color: #202020;
+    text-decoration: underline;
+}
+
+.venture-breadcrumb__item--active span {
+    color: #202020;
+    font-weight: 600;
+}
+</style>
