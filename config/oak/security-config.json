@@ -1,0 +1,85 @@
+{
+  "security": {
+    "authentication": {
+      "type": "default",
+      "loginModules": [
+        {
+          "name": "org.apache.jackrabbit.oak.security.authentication.token.TokenLoginModule",
+          "flag": "SUFFICIENT",
+          "options": {}
+        },
+        {
+          "name": "org.apache.jackrabbit.oak.security.authentication.user.LoginModuleImpl",
+          "flag": "REQUIRED",
+          "options": {}
+        }
+      ],
+      "token": {
+        "enabled": true,
+        "tokenExpiration": 43200000,
+        "tokenLength": 8,
+        "tokenRefresh": true
+      }
+    },
+    "authorization": {
+      "type": "default",
+      "accessControlManager": "org.apache.jackrabbit.oak.security.authorization.accesscontrol.AccessControlManagerImpl",
+      "permissionProvider": "org.apache.jackrabbit.oak.security.authorization.permission.PermissionProviderImpl",
+      "importBehavior": "besteffort"
+    },
+    "user": {
+      "adminId": "admin",
+      "anonymousId": "anonymous",
+      "usersPath": "/home/users",
+      "groupsPath": "/home/groups",
+      "defaultDepth": 1,
+      "passwordHash": {
+        "algorithm": "SHA-256",
+        "iterations": 1000,
+        "saltSize": 8
+      }
+    },
+    "privilege": {
+      "type": "default"
+    }
+  },
+  "defaultGroups": [
+    {
+      "id": "administrators",
+      "name": "Administrators",
+      "description": "System administrators with full access"
+    },
+    {
+      "id": "content-authors",
+      "name": "Content Authors",
+      "description": "Users who can create and edit content"
+    },
+    {
+      "id": "dam-users",
+      "name": "DAM Users",
+      "description": "Users who can manage digital assets"
+    },
+    {
+      "id": "workflow-users",
+      "name": "Workflow Users",
+      "description": "Users who can participate in workflows"
+    }
+  ],
+  "defaultPermissions": {
+    "/": {
+      "administrators": ["jcr:all"],
+      "everyone": ["jcr:read"]
+    },
+    "/content": {
+      "content-authors": ["jcr:read", "jcr:write", "jcr:nodeTypeManagement"],
+      "everyone": ["jcr:read"]
+    },
+    "/content/dam": {
+      "dam-users": ["jcr:read", "jcr:write", "jcr:nodeTypeManagement"],
+      "everyone": ["jcr:read"]
+    },
+    "/var/workflow": {
+      "workflow-users": ["jcr:read", "jcr:write"]
+    }
+  }
+}

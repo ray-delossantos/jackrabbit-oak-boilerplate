@@ -1,0 +1,69 @@
+<!--/*
+    AEM Oak - Header Component
+    Site header with navigation.
+*/-->
+<sly data-sly-use.page="com.aem.oak.models.PageModel"/>
+
+<header class="site-header" role="banner">
+    <div class="header-container">
+        <!--/* Logo */-->
+        <div class="logo">
+            <a href="/content.html" class="logo-link" aria-label="Home">
+                <span class="logo-text">AEM Oak</span>
+            </a>
+        </div>
+
+        <!--/* Mobile Menu Toggle */-->
+        <button class="nav-toggle"
+                aria-expanded="false"
+                aria-controls="main-nav"
+                aria-label="Toggle navigation">
+            <span class="nav-toggle-icon"></span>
+        </button>
+
+        <!--/* Main Navigation */-->
+        <nav id="main-nav" class="main-nav" role="navigation" aria-label="Main">
+            <ul class="nav-list">
+                <!--/* Home Link */-->
+                <li class="nav-item">
+                    <a href="/content.html" class="nav-link">Home</a>
+                </li>
+
+                <!--/* Dynamic Navigation from Content */-->
+                <sly data-sly-test="${page.parent.navChildren}">
+                    <li data-sly-list="${page.parent.navChildren}" class="nav-item">
+                        <a href="${item.canonicalUrl @ context='uri'}"
+                           class="nav-link ${item.path == page.path ? 'active' : ''}">
+                            ${item.navTitle}
+                        </a>
+
+                        <!--/* Sub Navigation */-->
+                        <ul data-sly-test="${item.navChildren}" class="nav-submenu">
+                            <li data-sly-list.subitem="${item.navChildren}" class="nav-subitem">
+                                <a href="${subitem.canonicalUrl @ context='uri'}"
+                                   class="nav-sublink">
+                                    ${subitem.navTitle}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </sly>
+            </ul>
+        </nav>
+
+        <!--/* Search */-->
+        <div class="header-search">
+            <form action="/content/search.html" method="get" role="search">
+                <label for="search-input" class="visually-hidden">Search</label>
+                <input type="search"
+                       id="search-input"
+                       name="q"
+                       placeholder="Search..."
+                       class="search-input"/>
+                <button type="submit" class="search-button" aria-label="Search">
+                    <span class="search-icon">&#128269;</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</header>

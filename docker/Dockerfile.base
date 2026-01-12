@@ -1,0 +1,47 @@
+# Base image for AEM Oak instances
+# Contains Apache Felix OSGi framework and common dependencies
+
+FROM eclipse-temurin:21-jre-alpine
+
+LABEL maintainer="AEM Oak Boilerplate"
+LABEL description="Base image for AEM Oak CMS with Apache Felix OSGi"
+
+# Set environment variables
+ENV FELIX_VERSION=7.0.5
+ENV FELIX_HOME=/opt/felix
+ENV AEM_HOME=/opt/aem
+ENV JAVA_OPTS="-Xmx2g -Xms512m -XX:+UseG1GC"
+
+# Install required packages
+RUN apk add --no-cache \
+    curl \
+    bash \
+    tini \
+    && rm -rf /var/cache/apk/*
+
+# Create directories
+RUN mkdir -p ${FELIX_HOME} ${AEM_HOME}/config ${AEM_HOME}/logs ${AEM_HOME}/felix-cache
+
+# Download and extract Apache Felix
+RUN curl -fsSL "https://dlcdn.apache.org/felix/org.apache.felix.main.distribution-${FELIX_VERSION}.tar.gz" \
+    | tar xz -C /opt \
+    && mv /opt/felix-framework-${FELIX_VERSION}/* ${FELIX_HOME}/ \
+    && rm -rf /opt/felix-framework-${FELIX_VERSION}
+
+# Create non-root user
+RUN addgroup -g 1000 aem && \
+    adduser -u 1000 -G aem -h ${AEM_HOME} -D aem
+
+# Set ownership
+RUN chown -R aem:aem ${FELIX_HOME} ${AEM_HOME}
+
+# Switch to non-root user
+USER aem
+
+WORKDIR ${AEM_HOME}
+
+# Expose default ports
+EXPOSE 8080 8443
+
+# Use tini as init system
+ENTRYPOINT ["/sbin/tini", "--"]

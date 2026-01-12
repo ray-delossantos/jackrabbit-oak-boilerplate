@@ -1,0 +1,28 @@
+<!--/*
+    AEM Oak - Text Component
+    Displays text content with optional rich text formatting.
+*/-->
+<sly data-sly-use.text="com.aem.oak.models.TextModel"/>
+
+<div data-sly-test="${text.hasContent}"
+     class="${text.computedClasses}"
+     style="${text.computedStyles @ context='styleString'}">
+
+    <!--/* Rich Text Content (HTML) */-->
+    <div data-sly-test="${text.richText}"
+         class="text-content text-richtext">
+        ${text.text @ context='html'}
+    </div>
+
+    <!--/* Plain Text Content */-->
+    <p data-sly-test="${!text.richText}"
+       class="text-content text-plain">
+        ${text.text}
+    </p>
+</div>
+
+<!--/* Author Mode: Empty Component Placeholder */-->
+<div data-sly-test="${!text.hasContent && wcmmode.edit}"
+     class="component-placeholder">
+    <p>Text Component - Click to edit</p>
+</div>

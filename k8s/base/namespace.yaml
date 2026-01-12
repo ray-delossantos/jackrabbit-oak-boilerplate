@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-oak
+    app.kubernetes.io/component: platform

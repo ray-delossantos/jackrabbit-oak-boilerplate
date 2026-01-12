@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: aem-author
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-author
+    app.kubernetes.io/component: author
+spec:
+  serviceName: aem-author
+  replicas: 2
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: aem-author
+  template:
+    metadata:
+      labels:
+        app: aem-author
+        app.kubernetes.io/name: aem-author
+        tier: author
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: author
+        image: aem-oak/author:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        env:
+        - name: OAK_CLUSTER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: INSTANCE_TYPE
+          value: "author"
+        - name: POSTGRES_URL
+          value: jdbc:postgresql://postgres:5432/oak
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: password
+        - name: S3_ENDPOINT
+          value: http://minio:9000
+        - name: S3_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secrets
+              key: access-key
+        - name: S3_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secrets
+              key: secret-key
+        - name: S3_BUCKET
+          value: oak-blobs
+        - name: S3_REGION
+          value: us-east-1
+        - name: JAVA_OPTS
+          value: "-Xmx2g -Xms1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Djava.security.egd=file:/dev/./urandom"
+        - name: JCR_ADMIN_USER
+          value: "admin"
+        - name: JCR_ADMIN_PASSWORD
+          value: "admin"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        readinessProbe:
+          httpGet:
+            path: /system/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /system/health
+            port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 10"]
+        volumeMounts:
+        - name: felix-cache
+          mountPath: /opt/aem/felix-cache
+        - name: oak-config
+          mountPath: /opt/aem/config/oak
+          readOnly: true
+  volumeClaimTemplates:
+  - metadata:
+      name: felix-cache
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi
+  volumes:
+  - name: oak-config
+    configMap:
+      name: oak-config

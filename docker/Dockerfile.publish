@@ -1,0 +1,47 @@
+# Publish instance image
+# Based on AEM Oak base image with publish-specific bundles and configuration
+
+FROM aem-oak/base:latest
+
+LABEL description="AEM Oak Publish Instance"
+
+USER root
+
+# Create bundle directory
+RUN mkdir -p ${FELIX_HOME}/bundle ${AEM_HOME}/config/oak ${AEM_HOME}/config/sling
+
+# Copy OSGi bundles from build
+COPY --chown=aem:aem publish/target/*.jar ${FELIX_HOME}/bundle/
+COPY --chown=aem:aem shared/common-api/target/*.jar ${FELIX_HOME}/bundle/
+COPY --chown=aem:aem shared/oak-core-bundle/target/*.jar ${FELIX_HOME}/bundle/
+COPY --chown=aem:aem shared/sling-api-bundle/target/*.jar ${FELIX_HOME}/bundle/
+COPY --chown=aem:aem shared/sling-htl-bundle/target/*.jar ${FELIX_HOME}/bundle/
+
+# Copy configurations
+COPY --chown=aem:aem config/felix/felix-publish.properties ${FELIX_HOME}/conf/config.properties
+COPY --chown=aem:aem config/oak/ ${AEM_HOME}/config/oak/
+COPY --chown=aem:aem config/sling/ ${AEM_HOME}/config/sling/
+
+# Copy startup script
+COPY --chown=aem:aem scripts/start.sh ${AEM_HOME}/start.sh
+RUN chmod +x ${AEM_HOME}/start.sh
+
+# Copy health check script
+COPY --chown=aem:aem scripts/health-check.sh ${AEM_HOME}/health-check.sh
+RUN chmod +x ${AEM_HOME}/health-check.sh
+
+USER aem
+
+# Environment variables for publish
+ENV INSTANCE_TYPE=publish
+ENV FELIX_CACHE_ROOTDIR=${AEM_HOME}/felix-cache
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD ${AEM_HOME}/health-check.sh
+
+# Expose only HTTP port (no HTTPS needed for internal traffic)
+EXPOSE 8080
+
+# Start command
+CMD ["./start.sh"]

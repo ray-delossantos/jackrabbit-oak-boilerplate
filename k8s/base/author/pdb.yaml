@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: aem-author-pdb
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-author
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: aem-author

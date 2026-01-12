@@ -1,0 +1,65 @@
+{
+  "repository": {
+    "name": "AEM Oak Repository",
+    "version": "1.0.0"
+  },
+  "nodeStore": {
+    "type": "document",
+    "documentStore": {
+      "type": "rdb",
+      "driver": "org.postgresql.Driver",
+      "url": "${POSTGRES_URL:jdbc:postgresql://postgres:5432/oak}",
+      "user": "${POSTGRES_USER:oak}",
+      "password": "${POSTGRES_PASSWORD:oak}"
+    },
+    "clusterId": "${OAK_CLUSTER_ID:1}",
+    "leaseCheckMode": "STRICT",
+    "cache": {
+      "nodeCacheSize": 256,
+      "childrenCacheSize": 64,
+      "diffCacheSize": 32,
+      "documentCacheSize": 128
+    },
+    "journal": {
+      "gcInterval": 86400000,
+      "maxAge": 86400000
+    }
+  },
+  "blobStore": {
+    "type": "s3",
+    "s3": {
+      "accessKey": "${S3_ACCESS_KEY:minioadmin}",
+      "secretKey": "${S3_SECRET_KEY:minioadmin}",
+      "bucket": "${S3_BUCKET:oak-blobs}",
+      "region": "${S3_REGION:us-east-1}",
+      "endpoint": "${S3_ENDPOINT:http://minio:9000}",
+      "pathStyleAccess": true
+    },
+    "cache": {
+      "directory": "/tmp/oak-blob-cache",
+      "maxSize": 1073741824
+    }
+  },
+  "security": {
+    "admin": {
+      "defaultUser": "admin",
+      "defaultPassword": "${JCR_ADMIN_PASSWORD:admin}"
+    },
+    "anonymous": {
+      "enabled": true,
+      "paths": ["/content", "/etc/clientlibs"]
+    }
+  },
+  "index": {
+    "asyncIndexUpdate": true,
+    "asyncInterval": 5000,
+    "lucene": {
+      "enabled": true,
+      "directory": "/var/oak/index"
+    }
+  },
+  "observation": {
+    "enabled": true,
+    "queueSize": 10000
+  }
+}

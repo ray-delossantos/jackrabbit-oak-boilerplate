@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: aem-oak
+
+resources:
+  - namespace.yaml
+  - secrets/postgres-secrets.yaml
+  - secrets/minio-secrets.yaml
+  - configmaps/oak-config.yaml
+  - postgres/statefulset.yaml
+  - postgres/service.yaml
+  - minio/statefulset.yaml
+  - minio/service.yaml
+  - author/statefulset.yaml
+  - author/service.yaml
+  - author/pdb.yaml
+  - publish/deployment.yaml
+  - publish/service.yaml
+  - publish/hpa.yaml
+  - ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: aem-oak
+  app.kubernetes.io/managed-by: kustomize
+
+images:
+  - name: aem-oak/author
+    newTag: latest
+  - name: aem-oak/publish
+    newTag: latest

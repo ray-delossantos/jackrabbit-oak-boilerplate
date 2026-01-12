@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aem-ingress
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-oak
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  # Author tier - authenticated users only
+  - host: author.aem-oak.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: aem-author
+            port:
+              number: 80
+  # Publish tier - public content delivery
+  - host: www.aem-oak.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: aem-publish
+            port:
+              number: 80
+  # MinIO Console (admin only)
+  - host: minio.aem-oak.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minio
+            port:
+              number: 9001
+  tls:
+  - hosts:
+    - author.aem-oak.local
+    - www.aem-oak.local
+    - minio.aem-oak.local
+    secretName: aem-tls-secret

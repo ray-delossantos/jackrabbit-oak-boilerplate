@@ -1,0 +1,50 @@
+<!--/*
+    AEM Oak - Image Component
+    Displays images with responsive support and optional linking.
+*/-->
+<sly data-sly-use.image="com.aem.oak.models.ImageModel"/>
+
+<figure data-sly-test="${image.hasContent}"
+        class="${image.computedClasses}">
+
+    <!--/* Image with Link */-->
+    <a data-sly-test="${image.hasLink}"
+       href="${image.linkURL @ context='uri'}"
+       target="${image.linkTarget}"
+       class="image-link">
+        <img src="${image.src @ context='uri'}"
+             alt="${image.alt @ context='attribute'}"
+             title="${image.title @ context='attribute'}"
+             width="${image.width @ context='attribute'}"
+             height="${image.height @ context='attribute'}"
+             loading="${image.loading}"
+             srcset="${image.srcset @ context='attribute'}"
+             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+             class="image-element"/>
+    </a>
+
+    <!--/* Image without Link */-->
+    <img data-sly-test="${!image.hasLink}"
+         src="${image.src @ context='uri'}"
+         alt="${image.alt @ context='attribute'}"
+         title="${image.title @ context='attribute'}"
+         width="${image.width @ context='attribute'}"
+         height="${image.height @ context='attribute'}"
+         loading="${image.loading}"
+         srcset="${image.srcset @ context='attribute'}"
+         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+         class="image-element"
+         data-sly-attribute.role="${image.decorative ? 'presentation' : ''}"/>
+
+    <!--/* Caption */-->
+    <figcaption data-sly-test="${image.hasCaption}"
+                class="image-caption">
+        ${image.caption}
+    </figcaption>
+</figure>
+
+<!--/* Author Mode: Empty Component Placeholder */-->
+<div data-sly-test="${!image.hasContent && wcmmode.edit}"
+     class="component-placeholder">
+    <p>Image Component - Drag an image or select from DAM</p>
+</div>

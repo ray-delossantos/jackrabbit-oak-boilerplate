@@ -1,0 +1,22 @@
+<!--/*
+    AEM Oak - Paragraph System (parsys) Component
+    Container for child components that can be added by authors.
+*/-->
+<div class="parsys"
+     data-sly-use.template="core/wcm/components/commons/v1/templates.html">
+
+    <!--/* Render all child resources */-->
+    <sly data-sly-list="${resource.children}">
+        <div class="parsys-item"
+             data-sly-test="${!item.name.startsWith('jcr:') && !item.name.startsWith('rep:')}">
+            <sly data-sly-resource="${item.path}"/>
+        </div>
+    </sly>
+
+    <!--/* Author Mode: New Component Placeholder */-->
+    <div data-sly-test="${wcmmode.edit}" class="parsys-newpar">
+        <div class="newpar-placeholder">
+            <p>Drop components here</p>
+        </div>
+    </div>
+</div>

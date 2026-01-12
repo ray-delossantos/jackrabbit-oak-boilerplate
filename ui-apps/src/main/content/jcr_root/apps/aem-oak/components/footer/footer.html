@@ -1,0 +1,69 @@
+<!--/*
+    AEM Oak - Footer Component
+    Site footer with links and copyright.
+*/-->
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+        <!--/* Footer Navigation */-->
+        <nav class="footer-nav" aria-label="Footer">
+            <div class="footer-section">
+                <h3 class="footer-heading">About</h3>
+                <ul class="footer-links">
+                    <li><a href="/content/about.html">About Us</a></li>
+                    <li><a href="/content/contact.html">Contact</a></li>
+                    <li><a href="/content/careers.html">Careers</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-heading">Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="/content/docs.html">Documentation</a></li>
+                    <li><a href="/content/api.html">API</a></li>
+                    <li><a href="/content/support.html">Support</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-heading">Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="/content/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/content/terms.html">Terms of Service</a></li>
+                    <li><a href="/content/cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-heading">Connect</h3>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">
+                            GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter">
+                            Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            LinkedIn
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!--/* Copyright */-->
+        <div class="footer-bottom">
+            <p class="copyright">
+                &copy; ${currentYear @ context='text'} AEM Oak. Built with Apache Jackrabbit Oak.
+            </p>
+            <p class="powered-by">
+                Powered by <a href="https://jackrabbit.apache.org/oak/" target="_blank" rel="noopener">Apache Jackrabbit Oak</a>
+                and <a href="https://sling.apache.org/" target="_blank" rel="noopener">Apache Sling</a>
+            </p>
+        </div>
+    </div>
+</footer>

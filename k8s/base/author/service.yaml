@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aem-author
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-author
+    app.kubernetes.io/component: author
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: http
+  - port: 443
+    targetPort: 8443
+    name: https
+  selector:
+    app: aem-author
+---
+# Headless service for StatefulSet pod discovery
+apiVersion: v1
+kind: Service
+metadata:
+  name: aem-author-headless
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-author
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: aem-author

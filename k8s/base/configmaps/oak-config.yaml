@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oak-config
+  namespace: aem-oak
+  labels:
+    app.kubernetes.io/name: aem-oak
+    app.kubernetes.io/component: config
+data:
+  repository-config.json: |
+    {
+      "repository": {
+        "name": "AEM Oak Repository",
+        "version": "1.0.0"
+      },
+      "nodeStore": {
+        "type": "document",
+        "documentStore": {
+          "type": "rdb"
+        },
+        "leaseCheckMode": "STRICT",
+        "cache": {
+          "nodeCacheSize": 256,
+          "childrenCacheSize": 64,
+          "diffCacheSize": 32,
+          "documentCacheSize": 128
+        }
+      },
+      "blobStore": {
+        "type": "s3",
+        "cache": {
+          "directory": "/tmp/oak-blob-cache",
+          "maxSize": 1073741824
+        }
+      },
+      "security": {
+        "anonymous": {
+          "enabled": true,
+          "paths": ["/content", "/etc/clientlibs"]
+        }
+      }
+    }

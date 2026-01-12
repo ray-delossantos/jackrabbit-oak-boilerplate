@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--/*
+    AEM Oak - Page Component
+    Base page template that provides the HTML structure and includes header/footer.
+*/-->
+<html lang="${properties.language @ context='attribute'}"
+      data-sly-use.page="com.aem.oak.models.PageModel">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!--/* Page Title */-->
+    <title>${page.pageTitle || page.title}</title>
+
+    <!--/* Meta Description */-->
+    <meta data-sly-test="${page.description}"
+          name="description"
+          content="${page.description @ context='attribute'}"/>
+
+    <!--/* Keywords */-->
+    <meta data-sly-test="${page.keywords}"
+          name="keywords"
+          content="${page.keywords @ join=', ', context='attribute'}"/>
+
+    <!--/* Canonical URL */-->
+    <link rel="canonical" href="${page.canonicalUrl @ context='uri'}"/>
+
+    <!--/* Open Graph Meta Tags */-->
+    <meta property="og:title" content="${page.pageTitle || page.title @ context='attribute'}"/>
+    <meta property="og:description" content="${page.description @ context='attribute'}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="${page.canonicalUrl @ context='uri'}"/>
+
+    <!--/* Favicon */-->
+    <link rel="icon" type="image/x-icon" href="/etc/clientlibs/aem-oak/images/favicon.ico"/>
+
+    <!--/* Client Libraries - CSS */-->
+    <link rel="stylesheet" href="/etc/clientlibs/aem-oak/css/base.css"/>
+    <link rel="stylesheet" href="/etc/clientlibs/aem-oak/css/components.css"/>
+
+    <!--/* Additional Head Content */-->
+    <sly data-sly-resource="${'head' @ resourceType='aem-oak/components/head'}"/>
+</head>
+<body class="page page-${page.name}">
+    <!--/* Skip Navigation Link */-->
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
+
+    <!--/* Header */-->
+    <sly data-sly-resource="${'header' @ resourceType='aem-oak/components/header'}"/>
+
+    <!--/* Breadcrumbs */-->
+    <nav class="breadcrumbs" aria-label="Breadcrumb" data-sly-test="${!page.homePage}">
+        <ol>
+            <li data-sly-list="${page.breadcrumbs}">
+                <a data-sly-test="${!itemList.last}"
+                   href="${item.canonicalUrl @ context='uri'}">${item.navTitle}</a>
+                <span data-sly-test="${itemList.last}" aria-current="page">${item.navTitle}</span>
+                <span data-sly-test="${!itemList.last}" class="separator">/</span>
+            </li>
+        </ol>
+    </nav>
+
+    <!--/* Main Content */-->
+    <main id="main-content" role="main">
+        <!--/* Page Title */-->
+        <header class="page-header">
+            <h1>${page.title}</h1>
+            <p data-sly-test="${page.description}" class="page-description">
+                ${page.description}
+            </p>
+        </header>
+
+        <!--/* Content Area - Paragraph System */-->
+        <div class="content-area">
+            <sly data-sly-resource="${'content' @ resourceType='aem-oak/components/parsys'}"/>
+        </div>
+    </main>
+
+    <!--/* Footer */-->
+    <sly data-sly-resource="${'footer' @ resourceType='aem-oak/components/footer'}"/>
+
+    <!--/* Client Libraries - JavaScript */-->
+    <script src="/etc/clientlibs/aem-oak/js/base.js"></script>
+    <script src="/etc/clientlibs/aem-oak/js/components.js"></script>
+</body>
+</html>
