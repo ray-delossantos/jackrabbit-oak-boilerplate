@@ -12,6 +12,8 @@ resources:
   - postgres/service.yaml
   - minio/statefulset.yaml
   - minio/service.yaml
+  - redis/statefulset.yaml
+  - redis/service.yaml
   - author/statefulset.yaml
   - author/service.yaml
   - author/pdb.yaml

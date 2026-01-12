@@ -119,6 +119,13 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <!-- Redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
         <!-- Commons -->
         <dependency>
             <groupId>commons-io</groupId>
