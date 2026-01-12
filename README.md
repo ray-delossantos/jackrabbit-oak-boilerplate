@@ -4,14 +4,14 @@
 [![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://openjdk.org/projects/jdk/21/)
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
-An AEM-like Content Management System built on Apache Jackrabbit Oak, designed for Kubernetes deployment. This boilerplate provides a foundation for building content-centric applications with Author/Publish tier separation, digital asset management, and HTL templating.
+A Content Management System built on Apache Jackrabbit Oak, designed for Kubernetes deployment. This boilerplate provides a foundation for building content-centric applications with Author/Publish tier separation, digital asset management, and HTL templating.
 
 ## Prerequisites
 
 - **Java 21** (OpenJDK or Eclipse Temurin)
 - **Maven 3.9+**
-- **Docker** (with BuildKit support)
-- **Kubernetes** cluster (minikube, kind, or cloud provider)
+- **Docker** (Colima, Podman, or compatible runtime)
+- **Kubernetes** cluster (Colima, minikube, kind, or cloud provider)
 - **kubectl** configured for your cluster
 
 ## Quick Start
@@ -58,8 +58,47 @@ Then access:
 
 ### Linux
 
-Ensure Docker is running without sudo:
+**Option A: Colima (Recommended)**
 ```bash
+# Install Colima
+curl -fsSL https://github.com/abiosoft/colima/releases/latest/download/colima-Linux-x86_64 -o colima
+chmod +x colima && sudo mv colima /usr/local/bin/
+
+# Install Docker CLI
+sudo apt-get install docker.io  # Debian/Ubuntu
+# or: sudo dnf install docker    # Fedora
+
+# Start with Kubernetes enabled
+colima start --cpu 4 --memory 8 --disk 100 --kubernetes
+
+# Verify setup
+docker info
+kubectl cluster-info
+
+# Install NGINX Ingress Controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+```
+
+**Option B: Podman with Kind**
+```bash
+# Install Podman
+sudo apt-get install podman  # Debian/Ubuntu
+# or: sudo dnf install podman  # Fedora
+
+# Install Kind
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+chmod +x ./kind && sudo mv ./kind /usr/local/bin/
+
+# Create cluster
+kind create cluster --name aem-oak
+
+# Install NGINX Ingress Controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+```
+
+**Option C: Docker Engine**
+```bash
+# Ensure Docker is running without sudo
 sudo usermod -aG docker $USER
 newgrp docker
 ```
@@ -70,11 +109,32 @@ minikube addons enable ingress
 minikube tunnel  # Run in separate terminal
 ```
 
-### macOS
+### macOS (Colima)
 
-For Docker Desktop, ensure Kubernetes is enabled in settings.
+Colima provides Docker and Kubernetes without Docker Desktop:
 
-For minikube:
+```bash
+# Install Colima and Docker CLI
+brew install colima docker kubectl
+
+# Start with Kubernetes enabled (allocate sufficient resources)
+colima start --cpu 4 --memory 8 --disk 100 --kubernetes
+
+# Verify setup
+docker info
+kubectl cluster-info
+
+# Install NGINX Ingress Controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+# Wait for ingress to be ready
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=120s
+```
+
+**Alternative: minikube**
 ```bash
 brew install minikube
 minikube start --driver=docker
@@ -119,14 +179,14 @@ DOCKER_REGISTRY=myregistry.io IMAGE_TAG=v1.0.0 ./scripts/build.sh
 - [Apache Felix](https://felix.apache.org/) - OSGi runtime
 - [PostgreSQL](https://www.postgresql.org/) - Document storage backend
 - [MinIO](https://min.io/) - S3-compatible blob storage
-- [HTL Specification](https://github.com/adobe/htl-spec) - Templating language
+- [HTL (Apache Sling)](https://sling.apache.org/documentation/bundles/scripting/scripting-htl.html) - Templating language
+- [Colima](https://github.com/abiosoft/colima) - Container runtime for macOS/Linux
 
 ## Acknowledgments
 
 This project is built on the shoulders of giants:
 
-- **Apache Software Foundation** for Jackrabbit Oak, Sling, and Felix
-- **Adobe** for the HTL (Sightly) templating specification
+- **Apache Software Foundation** for Jackrabbit Oak, Sling, Felix, and HTL
 - **The PostgreSQL Global Development Group** for PostgreSQL
 - **MinIO, Inc.** for the S3-compatible object storage
 
